@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 @Service
-public class BookStoreServices {
+public class OrderConfirmationService {
     
-    public BookStoreServices() {
+    public OrderConfirmationService() {
     }
     public String setDetails(Consumer consumer) throws BookStoreException {
         Pattern patternForName = Pattern.compile("^[A-Z]{1}[a-z]{2,}");

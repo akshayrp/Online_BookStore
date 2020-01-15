@@ -11,9 +11,9 @@ public class BookStoreServicesTest {
     @Test
     public void givenOnUserDetailsPage_whenClickedOnBuyButton_ShouldGetUserDeliveryDetails() {
         Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "201901","India");
-        BookStoreServices bookStoreServices = new BookStoreServices();
+        OrderConfirmationService orderConfirmationService = new OrderConfirmationService();
         try {
-            String s = bookStoreServices.setDetails(consumer);
+            String s = orderConfirmationService.setDetails(consumer);
             Assert.assertEquals(consumer.toString(),s);
         } catch (BookStoreException e) {
         }
@@ -22,9 +22,9 @@ public class BookStoreServicesTest {
     @Test
     public void givenUserDetails_WhenUserEntersInvalidDetail_ShouldThrowException() {
         Consumer consumer = new Consumer("k", "p", "h", "20","India");
-        BookStoreServices bookStoreServices = new BookStoreServices();
+        OrderConfirmationService orderConfirmationService = new OrderConfirmationService();
         try {
-           bookStoreServices.setDetails(consumer);
+           orderConfirmationService.setDetails(consumer);
         } catch (BookStoreException e) {
         }
     }
