@@ -18,14 +18,18 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @PropertySource("classpath:SuccessMessage.properties")
+
 @Service
 public class OrderConfirmationService {
     @Autowired
     IBookShopRepository bookShopRepository;
     @Autowired
     private JavaMailSender emailSender;
+
     @Autowired
     private Environment environment;
     @Autowired
@@ -37,6 +41,7 @@ public class OrderConfirmationService {
 
     private String companyEmail = "talltalesbookchembur@gmail.com";
     private String backOfficeEmail = "talltalesbookbackoffice@gmail.com";
+
 
 
     public List<Books> getAllBooks() throws BookStoreException {
@@ -53,6 +58,22 @@ public class OrderConfirmationService {
         return book;
     }
 
+    public String setDetails(Consumer consumer) throws BookStoreException {
+        Pattern patternForName = Pattern.compile("^[A-Z]{1}[a-z]{2,}");
+        Matcher matchObjName = patternForName.matcher(consumer.getName());
+
+        Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9]([-._+]{0,1}[a-zA-Z0-9])*[@]{1}[a-zA-Z0-9]{1,}[.]{1}[a-zA-Z]{2,3}([.]{1}[a-zA-Z]{2,3}){0,1}$");
+        Matcher matcherForEmail = emailPattern.matcher(consumer.getEmail());
+
+        Pattern patternForPin = Pattern.compile("^[1-9][0-9]{5}$");
+        Matcher matcherForPin = patternForPin.matcher(consumer.getPinCode());
+
+        if (matchObjName.matches() && matcherForEmail.matches() && matcherForPin.matches()) {
+            return consumer.toString();
+        }
+        throw new BookStoreException("invalid details..please check your entered data", BookStoreException
+                .ExceptionType.INVALID_DETAIL);
+    }
     public Response confirmOrderAndSendMail() {
 
         emailSender.send(setDataForCustomer(companyEmail, "akshaypatwari24@gmail.com"/*consumer.getEmail()*/,
@@ -100,3 +121,5 @@ public class OrderConfirmationService {
         return backOfficeMessage;
     }
 }
+
+

@@ -1,24 +1,21 @@
 package com.thoughtworks.onlinebookstore.model;
 
-import org.springframework.stereotype.Component;
-
 public class Consumer {
-
+    private String country;
     private String name;
     private String email;
     private String address;
     private CharSequence pinCode;
-    private String country;
+
+    public Consumer() {
+    }
 
     public Consumer(String name, String email, String address, CharSequence pinCode, String country) {
         this.name = name;
         this.email = email;
         this.address = address;
         this.pinCode = pinCode;
-        this.country.equalsIgnoreCase(country);
-    }
-
-    public Consumer() {
+        this.country = country;
     }
 
 

@@ -7,7 +7,7 @@ public class BookStoreException extends Exception {
         INVALID_DETAIL,DATA_NOT_AVAILABLE;
     }
 
-    public BookStoreException(String message,ExceptionType type) {
+    public BookStoreException(String message, ExceptionType type) {
         super(message);
         this.type = type;
     }
