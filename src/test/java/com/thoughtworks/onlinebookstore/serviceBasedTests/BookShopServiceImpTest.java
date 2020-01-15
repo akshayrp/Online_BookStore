@@ -38,7 +38,7 @@ public class BookShopServiceImpTest {
     @Test
     void givenBook_WhenAddedToDB_ShouldReturnTrue_Mock() {
         try {
-            BookDto bookDto = new BookDto(1l,"PrinceBio", "Prince Singh", 150D, "Biography Prince Singh", 10L);
+            BookDto bookDto = new BookDto("PrinceBio", "Prince Singh", "1.0",150D, "Biography Prince Singh", 10L);
             Book book = mock(Book.class);
             when(bookShopRepository.save(any())).thenReturn(new Book());
             when(mapper.map(bookDto, Book.class)).thenReturn(book);

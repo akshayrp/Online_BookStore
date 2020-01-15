@@ -1,10 +1,10 @@
 package com.thoughtworks.onlinebookstore.response;
 
 public class Response {
-    private final Object status;
-    private final Object result;
+    private final int status;
+    private final String result;
 
-    public Response(Object status, Object result) {
+    public Response(int status, String result) {
         this.status = status;
         this.result = result;
     }

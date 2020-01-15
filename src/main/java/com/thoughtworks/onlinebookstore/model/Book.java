@@ -13,6 +13,7 @@ public class Book {
     private Long bookId;
     private String bookName;
     private String authorName;
+    private String bookEdition;
     private Double price;
     private String description;
     private Long quantity;

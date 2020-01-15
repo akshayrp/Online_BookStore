@@ -1,6 +1,6 @@
 package com.thoughtworks.onlinebookstore.exception;
 
-public class BookStoreException extends Exception{
+public class BookStoreException extends Exception {
 
     private ExceptionType type;
 
@@ -13,5 +13,7 @@ public class BookStoreException extends Exception{
         return type;
     }
 
-    public enum ExceptionType {CANT_ADD_NULL_DATA}
+    public enum ExceptionType {
+        CANT_ADD_NULL_DATA;
+    }
 }

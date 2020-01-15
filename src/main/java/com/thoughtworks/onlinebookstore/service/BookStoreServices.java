@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class BookStoreServices implements IBookStoreServices {
 
@@ -18,11 +20,19 @@ public class BookStoreServices implements IBookStoreServices {
     private ModelMapper mapper;
 
     @Override
-    public boolean addBook(BookDto bookDto) throws BookStoreException {
-        if (bookDto == null)
-            throw new BookStoreException("Book data cannot be null", BookStoreException.ExceptionType.CANT_ADD_NULL_DATA);
+    public boolean addBook(BookDto bookDto) {
         Book book = mapper.map(bookDto, Book.class);
-        bookShopRepository.save(book);
+        Optional<Book> bookExist = bookShopRepository.findByAuthorNameAndBookEditionAndBookName(book.getBookName(),
+                book.getAuthorName(), book.getBookEdition());
+        if (!bookExist.isPresent()) {
+            bookShopRepository.save(book);
+            return true;
+        }
+        bookExist.map(storedBook -> {
+            storedBook.setQuantity(storedBook.getQuantity() + bookDto.getQuantity());
+            bookShopRepository.save(storedBook);
+            return storedBook;
+        });
         return true;
     }
 }
