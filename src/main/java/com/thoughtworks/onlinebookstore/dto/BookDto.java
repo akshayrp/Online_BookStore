@@ -1,6 +1,5 @@
 package com.thoughtworks.onlinebookstore.dto;
 
-
 public class BookDto {
     private Long bookId;
     private String bookName;

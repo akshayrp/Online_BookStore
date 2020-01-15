@@ -8,6 +8,7 @@ import com.thoughtworks.onlinebookstore.model.Consumer;
 import com.thoughtworks.onlinebookstore.repository.IBookShopRepository;
 import com.thoughtworks.onlinebookstore.utility.MailData;
 import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -16,14 +17,21 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @PropertySource("classpath:SuccessMessage.properties")
+
 @Service
 public class OrderConfirmationService {
     @Autowired
     private JavaMailSender emailSender;
+
     @Autowired
     private Environment environment;
+
+    @Autowired
+    IBookShopRepository bookShopRepository;
 
     private String companyEmail = "talltalesbookchembur@gmail.com";
     private String backOfficeEmail = "talltalesbookbackoffice@gmail.com";
@@ -40,9 +48,6 @@ public class OrderConfirmationService {
         return response;
     }
 
-    @Autowired
-    IBookShopRepository bookShopRepository;
-
     public List<Books> getAllBooks() throws BookStoreException {
         List<Books> booksList = bookShopRepository.findAll();
         if (booksList == null) {
@@ -56,6 +61,23 @@ public class OrderConfirmationService {
         Books byId = bookShopRepository.findById(id).get();
         Book book = new Book(byId.getId(),byId.getTitle(),byId.getPrice(),quantity);
         return book;
+    }
+
+    public String setDetails(Consumer consumer) throws BookStoreException {
+        Pattern patternForName = Pattern.compile("^[A-Z]{1}[a-z]{2,}");
+        Matcher matchObjName = patternForName.matcher(consumer.getName());
+
+        Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9]([-._+]{0,1}[a-zA-Z0-9])*[@]{1}[a-zA-Z0-9]{1,}[.]{1}[a-zA-Z]{2,3}([.]{1}[a-zA-Z]{2,3}){0,1}$");
+        Matcher matcherForEmail = emailPattern.matcher(consumer.getEmail());
+
+        Pattern patternForPin = Pattern.compile("^[1-9][0-9]{5}$");
+        Matcher matcherForPin = patternForPin.matcher(consumer.getPinCode());
+
+        if (matchObjName.matches() && matcherForEmail.matches() && matcherForPin.matches()) {
+            return consumer.toString();
+        }
+        throw new BookStoreException("invalid details..please check your entered data",BookStoreException
+                .ExceptionType.INVALID_DETAIL);
     }
 
     private SimpleMailMessage setDataForCustomer(String from, String to, String subject, String text) {
@@ -76,3 +98,5 @@ public class OrderConfirmationService {
         return backOfficeMessage;
     }
 }
+
+
