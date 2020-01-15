@@ -1,10 +1,8 @@
 package com.thoughtworks.onlinebookstore.service;
 
-import com.thoughtworks.onlinebookstore.Response.Response;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Books;
 import com.thoughtworks.onlinebookstore.repository.IBookShopRepository;
-import com.thoughtworks.onlinebookstore.service.OrderConfirmationService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,13 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)

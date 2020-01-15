@@ -16,7 +16,7 @@ public class Books {
     String image;
     int price;
     String description;
-    int availableQuantity;
+    int quantity;
 
     public Books() { }
 
@@ -27,7 +27,7 @@ public class Books {
         this.image = image;
         this.price = price;
         this.description = description;
-        this.availableQuantity =availableQuantity;
+        this.quantity =availableQuantity;
     }
 
     public String getTitle() {
@@ -52,5 +52,13 @@ public class Books {
 
     public String getDescription() {
         return description;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

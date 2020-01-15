@@ -4,7 +4,6 @@ import com.thoughtworks.onlinebookstore.Response.Response;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Books;
 import com.thoughtworks.onlinebookstore.model.Consumer;
-import com.thoughtworks.onlinebookstore.service.BookStoreServices;
 import com.thoughtworks.onlinebookstore.service.OrderConfirmationService;
 import org.junit.Assert;
 import org.junit.Test;

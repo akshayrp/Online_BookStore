@@ -1,13 +1,9 @@
 package com.thoughtworks.onlinebookstore.service;
 
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
-import com.thoughtworks.onlinebookstore.model.Book;
 import com.thoughtworks.onlinebookstore.model.Consumer;
-import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class OrderConfirmationWithoutMockTest {
 
