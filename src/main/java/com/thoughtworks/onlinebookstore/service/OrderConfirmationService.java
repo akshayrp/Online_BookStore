@@ -2,6 +2,7 @@ package com.thoughtworks.onlinebookstore.service;
 
 import com.thoughtworks.onlinebookstore.Response.Response;
 import com.thoughtworks.onlinebookstore.model.Consumer;
+import com.thoughtworks.onlinebookstore.repository.IBookShopRepository;
 import com.thoughtworks.onlinebookstore.utility.MailData;
 import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 @PropertySource("classpath:SuccessMessage.properties")
 @Service
 public class OrderConfirmationService {
+    @Autowired
+    IBookShopRepository bookShopRepository;
     @Autowired
     private JavaMailSender emailSender;
     @Autowired
@@ -33,6 +36,7 @@ public class OrderConfirmationService {
                         environment.getProperty("status.mail.MailSentSuccessFully"));
         return response;
     }
+
 
     private SimpleMailMessage setDataForCustomer(String from, String to, String subject, String text) {
         SimpleMailMessage userMessage = new SimpleMailMessage();
