@@ -16,16 +16,18 @@ public class Books {
     String image;
     int price;
     String description;
+    int availableQuantity;
 
     public Books() { }
 
-    public Books(int id, String author, String title, String image, int price, String description) {
+    public Books(int id, String author, String title, String image, int price, String description, int availableQuantity) {
         this.id = id;
         this.author = author;
         this.title = title;
         this.image = image;
         this.price = price;
         this.description = description;
+        this.availableQuantity =availableQuantity;
     }
 
     public String getTitle() {

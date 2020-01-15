@@ -1,6 +1,7 @@
 package com.thoughtworks.onlinebookstore.service;
 
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
+import com.thoughtworks.onlinebookstore.model.Book;
 import com.thoughtworks.onlinebookstore.model.Books;
 import com.thoughtworks.onlinebookstore.repository.IBookShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,12 @@ public class BookStoreServices {
             throw new BookStoreException("data not available",BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
         }
         return booksList;
+    }
+
+
+    public Book getBookById(int id, int quantity) {
+        Books byId = bookShopRepository.findById(id).get();
+        Book book = new Book(byId.getId(),byId.getTitle(),byId.getPrice(),quantity);
+        return book;
     }
 }
