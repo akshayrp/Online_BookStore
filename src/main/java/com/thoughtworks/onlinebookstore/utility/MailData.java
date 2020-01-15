@@ -1,6 +1,7 @@
 package com.thoughtworks.onlinebookstore.utility;
 
 import com.thoughtworks.onlinebookstore.dto.BookDto;
+import com.thoughtworks.onlinebookstore.model.Book;
 import com.thoughtworks.onlinebookstore.model.Consumer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,7 +10,7 @@ import java.time.format.FormatStyle;
 
 public class MailData {
 
-    private static BookDto bookDetails = new BookDto();
+    private static Book bookDetails = new Book();
 
     private static Consumer consumer = new Consumer();
 
@@ -23,7 +24,7 @@ public class MailData {
 
     /////////////Customer Mail Details
    private static String greetings = "Dear  " + consumer.getName() + ",\n\n";
-    private static String ack = "We acknowledge the receipt of your purchase order " + bookDetails.getBookId() + ". We are pleased to " +
+    private static String ack = "We acknowledge the receipt of your purchase order " + bookDetails.getId() + ". We are pleased to " +
             "accept your order and look forward to doing business with you.\n\nAs per the terms outlined in our quote, delivery is from four to six weeks from the date of the order.\n" +
             "Should you have any queries regarding your order, please call our customer support number or get in touch with us directly via email.\n\n"
             + "Thank you again for your order and business.\n\n";
@@ -33,9 +34,9 @@ public class MailData {
    private static String managerGreetings = "Dear Manager,\n\n";
    private static String backOfficeMailData = "Hurray another order placed for us.\n" +
             "Following is the order details to be completed.\n\n";
-    private static String backOfficeOrderDetails = "Order Number : " + bookDetails.getBookId() + " | Order Date : " + bookingTime +
-            " | Recipient Name : " + consumer.getName() + "\nBook Name : " + bookDetails.getBookName() +
-            " | Quantity : " + bookDetails.getQuantity() + " | Total Book Price : " + "/////has to get from user model\n\n";
+    private static String backOfficeOrderDetails = "Order Number : " + bookDetails.getId() + " | Order Date : " + bookingTime +
+            " | Recipient Name : " + consumer.getName() + "\nBook Name : " + bookDetails.getTitle() +
+            " | Quantity : " + bookDetails.getSelectedQuantity() + " | Total Book Price : " + "/////has to get from user model\n\n";
 
 
     public static String getMailDataForCustomer() {

@@ -1,16 +1,21 @@
 package com.thoughtworks.onlinebookstore.service;
 
 import com.thoughtworks.onlinebookstore.Response.Response;
+import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
+import com.thoughtworks.onlinebookstore.exception.BookStoreException;
+import com.thoughtworks.onlinebookstore.model.Book;
+import com.thoughtworks.onlinebookstore.model.Books;
 import com.thoughtworks.onlinebookstore.model.Consumer;
 import com.thoughtworks.onlinebookstore.repository.IBookShopRepository;
 import com.thoughtworks.onlinebookstore.utility.MailData;
-import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @PropertySource("classpath:SuccessMessage.properties")
 @Service
@@ -22,21 +27,48 @@ public class OrderConfirmationService {
     @Autowired
     private Environment environment;
 
+    Book book;
+
     private String companyEmail = "talltalesbookchembur@gmail.com";
     private String backOfficeEmail = "talltalesbookbackoffice@gmail.com";
 
+
+    public List<Books> getAllBooks() throws BookStoreException {
+        List<Books> booksList = bookShopRepository.findAll();
+        if (booksList == null) {
+            throw new BookStoreException("data not available",BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
+        }
+        return booksList;
+    }
+
+    public Book getBookById(int id, int quantity) {
+        Books byId = bookShopRepository.findById(id).get();
+        book = new Book(byId.getId(),byId.getTitle(),byId.getPrice(),quantity);
+        return book;
+    }
+
     public Response confirmOrderAndSendMail() {
         Consumer consumer = new Consumer();
-        emailSender.send(setDataForCustomer(companyEmail,consumer.getEmail(),
+
+        emailSender.send(setDataForCustomer(companyEmail,"akshaypatwari24@gmail.com"/*consumer.getEmail()*/,
                 "TallTalesBooks Order Confirmation", MailData.getMailDataForCustomer()));
 
         emailSender.send(setDataForBackOffice(companyEmail));
 
         Response response = ResponseHelper.statusResponse(200,
-                        environment.getProperty("status.mail.MailSentSuccessFully"));
+                environment.getProperty("status.mail.MailSentSuccessFully"));
+        updateQuantity();
         return response;
     }
 
+    private void updateQuantity() {
+        int dbQuantity = bookShopRepository.findById(book.getId()).get().getQuantity();
+        int remainingQuantity = dbQuantity - book.getSelectedQuantity();
+        Books getBookById = bookShopRepository.findById(book.getId()).get();
+        getBookById.setQuantity(remainingQuantity);
+        bookShopRepository.save(getBookById);
+
+    }
 
     private SimpleMailMessage setDataForCustomer(String from, String to, String subject, String text) {
         SimpleMailMessage userMessage = new SimpleMailMessage();
