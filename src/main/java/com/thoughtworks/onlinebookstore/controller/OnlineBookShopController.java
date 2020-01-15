@@ -20,8 +20,8 @@ public class OnlineBookShopController {
         try {
             return bookStoreServices.setDetails(consumer);
         } catch (BookStoreException e) {
+            throw new BookStoreException("invalid details..please check your entered data", BookStoreException.ExceptionType.INVALID_DETAIL);
         }
-        throw new BookStoreException("invalid details..please check your entered data", BookStoreException.ExceptionType.INVALID_DETAIL);
     }
 
 }
