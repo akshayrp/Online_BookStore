@@ -1,7 +1,11 @@
 package com.thoughtworks.onlinebookstore.service;
 
 import com.thoughtworks.onlinebookstore.Response.Response;
+import com.thoughtworks.onlinebookstore.exception.BookStoreException;
+import com.thoughtworks.onlinebookstore.model.Book;
+import com.thoughtworks.onlinebookstore.model.Books;
 import com.thoughtworks.onlinebookstore.model.Consumer;
+import com.thoughtworks.onlinebookstore.repository.IBookShopRepository;
 import com.thoughtworks.onlinebookstore.utility.MailData;
 import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +14,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @PropertySource("classpath:SuccessMessage.properties")
 @Service
@@ -32,6 +38,24 @@ public class OrderConfirmationService {
         Response response = ResponseHelper.statusResponse(200,
                         environment.getProperty("status.mail.MailSentSuccessFully"));
         return response;
+    }
+
+    @Autowired
+    IBookShopRepository bookShopRepository;
+
+    public List<Books> getAllBooks() throws BookStoreException {
+        List<Books> booksList = bookShopRepository.findAll();
+        if (booksList == null) {
+            throw new BookStoreException("data not available",BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
+        }
+        return booksList;
+    }
+
+
+    public Book getBookById(int id, int quantity) {
+        Books byId = bookShopRepository.findById(id).get();
+        Book book = new Book(byId.getId(),byId.getTitle(),byId.getPrice(),quantity);
+        return book;
     }
 
     private SimpleMailMessage setDataForCustomer(String from, String to, String subject, String text) {
