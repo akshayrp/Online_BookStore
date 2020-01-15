@@ -51,5 +51,10 @@ public class OnlineBookShopController {
         }
     }
 
+    @GetMapping("/orderSummary/{id}")
+    public void getPrice(@PathVariable int id, @RequestParam(value = "quantity") int quantity ,@RequestBody Consumer consumer){
+        orderConfirmationService.getTotalPrice(id,consumer,quantity);
+    }
+
 
 }

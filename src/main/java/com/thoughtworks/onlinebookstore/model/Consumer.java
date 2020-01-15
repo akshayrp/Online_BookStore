@@ -1,7 +1,9 @@
 package com.thoughtworks.onlinebookstore.model;
 
+import com.thoughtworks.onlinebookstore.service.CountryType;
+
 public class Consumer {
-    private String country;
+    private CountryType country;
     private String name;
     private String email;
     private String address;
@@ -10,7 +12,7 @@ public class Consumer {
     public Consumer() {
     }
 
-    public Consumer(String name, String email, String address, CharSequence pinCode, String country) {
+    public Consumer(String name, String email, String address, CharSequence pinCode, CountryType country) {
         this.name = name;
         this.email = email;
         this.address = address;
@@ -35,7 +37,7 @@ public class Consumer {
         return pinCode;
     }
 
-    public String getCountry() {
+    public CountryType getCountry() {
         return country;
     }
 

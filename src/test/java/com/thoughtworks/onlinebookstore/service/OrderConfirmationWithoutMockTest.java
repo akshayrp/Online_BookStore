@@ -11,7 +11,7 @@ public class OrderConfirmationWithoutMockTest {
 
     @Test
     public void givenOnUserDetailsPage_whenClickedOnBuyButton_ShouldGetUserDeliveryDetails() {
-        Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "201901", "India");
+        Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "201901", CountryType.INDIA);
         try {
             String s = orderConfirmationService.setDetails(consumer);
             Assert.assertEquals(consumer.toString(), s);
@@ -21,7 +21,7 @@ public class OrderConfirmationWithoutMockTest {
 
     @Test
     public void givenUserDetails_WhenUserEntersInvalidDetail_ShouldThrowException() {
-        Consumer consumer = new Consumer("k", "p", "h", "20", "India");
+        Consumer consumer = new Consumer("k", "p", "h", "20", CountryType.INDIA);
         try {
             orderConfirmationService.setDetails(consumer);
         } catch (BookStoreException e) {

@@ -36,8 +36,6 @@ public class OrderConfirmationService {
     private String companyEmail = "talltalesbookchembur@gmail.com";
     private String backOfficeEmail = "talltalesbookbackoffice@gmail.com";
 
-
-
     public List<Books> getAllBooks() throws BookStoreException {
         List<Books> booksList = bookShopRepository.findAll();
         if (booksList == null) {
@@ -107,6 +105,11 @@ public class OrderConfirmationService {
         backOfficeMessage.setSubject("Order Received");
         backOfficeMessage.setText(MailData.getMailDataForBackOffice());
         return backOfficeMessage;
+    }
+
+    public void getTotalPrice(int id, Consumer consumer, int quantity) {
+
+
     }
 }
 
