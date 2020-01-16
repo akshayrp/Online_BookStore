@@ -1,7 +1,6 @@
 package com.thoughtworks.onlinebookstore.utility;
 
 import com.thoughtworks.onlinebookstore.dto.MailDto;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,11 +14,11 @@ public class MailData {
 
     private MailDto mailDto;
 
-    private  String bookingTime = LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG));
-    private  String Header = "\t\t\t\t\t\t\t\t\tPurchase Order Acceptance Letter\n\n";
-    private  String shopName = "\t\t\t\t\t\t\t\t\t\tTall Tales Book Shop Ltd.\n\n";
-    private  String shopAdd = "Tall Tales Book Shop,\nMalhotra Chambers,\nFirst floor, Govandi East,\nMumbai, Maharashtra 400088\n\n";
-    private  String sincere = "Sincerely,\nTall Tales Book Shop\ntall-tales-book@gmail.com\n";
+    private String bookingTime = LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG));
+    private String Header = "\t\t\t\t\t\t\t\t\tPurchase Order Acceptance Letter\n\n";
+    private String shopName = "\t\t\t\t\t\t\t\t\t\tTall Tales Book Shop Ltd.\n\n";
+    private String shopAdd = "Tall Tales Book Shop,\nMalhotra Chambers,\nFirst floor, Govandi East,\nMumbai, Maharashtra 400088\n\n";
+    private String sincere = "Sincerely,\nTall Tales Book Shop\ntall-tales-book@gmail.com\n";
 
 
     private String companyEmail = "talltalesbookchembur@gmail.com";
@@ -28,18 +27,18 @@ public class MailData {
 
 
     /////////////BackOffice Mail Details
-   private  String managerGreetings = "Dear Manager,\n\n";
-   private  String backOfficeMailData = "Hurray another order placed for us.\n" +
+    private String managerGreetings = "Dear Manager,\n\n";
+    private String backOfficeMailData = "Hurray another order placed for us.\n" +
             "Following is the order details to be completed.\n\n";
 
-    public  String getMailDataForCustomer() {
-        return Header + shopName + bookingTime + "\n\n" + shopAdd +  "Dear  " + mailDto.getConsumerName() + ",\n\n" + "We acknowledge the receipt of your purchase order " + mailDto.getBookId() + ". We are pleased to " +
+    public String getMailDataForCustomer() {
+        return Header + shopName + bookingTime + "\n\n" + shopAdd + "Dear  " + mailDto.getConsumerName() + ",\n\n" + "We acknowledge the receipt of your purchase order " + mailDto.getBookId() + ". We are pleased to " +
                 "accept your order and look forward to doing business with you.\n\nAs per the terms outlined in our quote, delivery is from four to six weeks from the date of the order.\n" +
                 "Should you have any queries regarding your order, please call our customer support number or get in touch with us directly via email.\n\n"
                 + "Thank you again for your order and business.\n\n" + sincere;
     }
 
-    public  String getMailDataForBackOffice() {
+    public String getMailDataForBackOffice() {
         return Header + shopName + bookingTime + "\n\n" + shopAdd + managerGreetings + backOfficeMailData +
                 "Order Number : " + mailDto.getBookId() + " | Order Date : "
                 + bookingTime +
@@ -47,26 +46,7 @@ public class MailData {
                 mailDto.getConsumerName() + "\nBook Name : " +
                 mailDto.getBookTitle() +
                 " | Quantity : " +
-                mailDto.getBookQuantity() + " | Total Book Price : "+mailDto.getTotalPrice()+"\n\n" + sincere;
-    }
-
-
-    public SimpleMailMessage setDataForCustomer(String from, String to, String subject, String text) {
-        SimpleMailMessage userMessage = new SimpleMailMessage();
-        userMessage.setFrom(from);
-        userMessage.setTo(to);
-        userMessage.setSubject(subject);
-        userMessage.setText(text);
-        return userMessage;
-    }
-
-    public SimpleMailMessage setDataForBackOffice(String from) {
-        SimpleMailMessage backOfficeMessage = new SimpleMailMessage();
-        backOfficeMessage.setFrom(from);
-        backOfficeMessage.setTo(backOfficeEmail);
-        backOfficeMessage.setSubject("Order Received");
-        backOfficeMessage.setText(this.getMailDataForBackOffice());
-        return backOfficeMessage;
+                mailDto.getBookQuantity() + " | Total Book Price : " + mailDto.getTotalPrice() + "\n\n" + sincere;
     }
 
     public void setMailData(MailDto mailDto) {

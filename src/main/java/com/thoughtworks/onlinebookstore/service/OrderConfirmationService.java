@@ -16,6 +16,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @PropertySource("classpath:SuccessMessage.properties")
@@ -50,18 +51,26 @@ public class OrderConfirmationService {
         return consumerRepository.save(consumer);
     }
 
-    public ResponseHelper confirmOrderAndSendMail(long consumerId) {
+    public ResponseHelper confirmOrderAndSendMail(Long consumerId)  {
         consumer = consumerRepository.findById(consumerId);
         MailDto mailDto = new MailDto(consumer.get().getName(), consumer.get().getEmail(), book.getBookId(),
                 book.getBookName(), book.getQuantity(), this.getTotalPrice());
         mailData.setMailData(mailDto);
+        try {
+            bookStoreServices.updateQuantity(this.book.getBookId(), this.book.getQuantity());
+        } catch (BookStoreException e) {
+            e.getMessage();
+        }
         emailSender.send(setDataForBackOffice(companyEmail));
         emailSender.send(setDataForCustomer(companyEmail, mailDto.getConsumerEmail(),
                 "TallTalesBooks Order Confirmation", mailData.getMailDataForCustomer()));
         saveOrderDetails();
-        bookStoreServices.updateQuantity(this.book.getBookId(), this.book.getQuantity());
+
         return new ResponseHelper(200, environment.getProperty("status.mail.MailSentSuccessFully"));
     }
+
+
+
 
     private void saveOrderDetails() {
         orderDetails = new OrderDetails(book.getBookId(), book.getBookName(), consumer.get().getName(),
@@ -97,6 +106,10 @@ public class OrderConfirmationService {
         backOfficeMessage.setSubject("Order Received");
         backOfficeMessage.setText(mailData.getMailDataForBackOffice());
         return backOfficeMessage;
+    }
+
+    public List<Book> getAllBooks() throws BookStoreException {
+    return bookStoreServices.getAllBooks();
     }
 }
 

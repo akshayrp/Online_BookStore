@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
+@AllArgsConstructor
 public class Book {
 
     public Book() { }
@@ -26,4 +27,5 @@ public class Book {
         this.price = price;
         this.quantity = quantity;
     }
+
 }

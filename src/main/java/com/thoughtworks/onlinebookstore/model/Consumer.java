@@ -1,6 +1,8 @@
 package com.thoughtworks.onlinebookstore.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Entity;
@@ -11,6 +13,8 @@ import javax.validation.constraints.Pattern;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Consumer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,5 +36,14 @@ public class Consumer {
     @NotBlank(message = "Please Enter Valid Pin")
     @Pattern(regexp = ("^[1-9][0-9]{5}$"))
     private String pinCode;
+
+    public Consumer(String name, String email, String address, String pinCode, String country) {
+
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.pinCode = pinCode;
+        this.country = country;
+    }
 }
 
