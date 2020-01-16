@@ -3,13 +3,13 @@ package com.thoughtworks.onlinebookstore.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 
-@Getter
-@NoArgsConstructor
 public class BookDto {
 
+    public BookDto() { }
+
+    private int bookId;
 
     @NotBlank(message = "BookName can't be null")
     private String bookName;
@@ -20,21 +20,46 @@ public class BookDto {
     @NotBlank(message = "BookEdition can't be null")
     private String bookEdition;
 
-//    @NotEmpty(message = "Book price can't be null")
+    @NotBlank(message = "Book price can't be null")
     private Double price;
 
     @NotBlank(message = "Description can't be null")
     private String description;
 
-//    @NotEmpty(message = "Book price can't be null")
-    private Long quantity;
+    @NotBlank(message = "Book price can't be null")
+    private int quantity;
 
-    public BookDto(String bookName, String authorName, String bookEdition, Double price, String description, Long quantity) {
+    public BookDto(int bookId,String bookName, String authorName, String bookEdition, Double price, String description, int quantity) {
+        this.bookId = bookId;
         this.bookName = bookName;
         this.authorName = authorName;
         this.bookEdition = bookEdition;
         this.price = price;
         this.description = description;
         this.quantity = quantity;
+    }
+
+    public int getBookId() {
+        return bookId;
+    }
+
+    public String getBookName() {
+        return bookName;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 }

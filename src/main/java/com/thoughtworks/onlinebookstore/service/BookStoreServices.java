@@ -7,7 +7,12 @@ import com.thoughtworks.onlinebookstore.repository.IBookStoreRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.thoughtworks.onlinebookstore.model.Books;
+import com.thoughtworks.onlinebookstore.model.Consumer;
 
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Optional;
 
 @Service
@@ -29,7 +34,7 @@ public class BookStoreServices implements IBookStoreServices {
             return true;
         }
         bookExist.map(storedBook -> {
-            storedBook.setQuantity(storedBook.getQuantity() + bookDto.getQuantity());
+            storedBook.setSelectedQuantity(storedBook.getSelectedQuantity() + bookDto.getQuantity());
             bookShopRepository.save(storedBook);
             return storedBook;
         });

@@ -37,24 +37,17 @@ public class BookShopServiceImpTest {
 
     @Test
     void givenBook_WhenAddedToDB_ShouldReturnTrue_Mock() {
-        try {
-            BookDto bookDto = new BookDto("PrinceBio", "Prince Singh", "1.0",150D, "Biography Prince Singh", 10L);
-            Book book = mock(Book.class);
-            when(bookShopRepository.save(any())).thenReturn(new Book());
-            when(mapper.map(bookDto, Book.class)).thenReturn(book);
-            boolean response = bookShopServicesImp.addBook(bookDto);
-            Assert.assertEquals(true, response);
-        } catch (BookStoreException e) {
-            e.printStackTrace();
-        }
+        BookDto bookDto = new BookDto(1,"PrinceBio", "Prince Singh", "1.0",150D, "Biography Prince Singh", 10);
+        Book book = mock(Book.class);
+        when(bookShopRepository.save(any())).thenReturn(new Book());
+        when(mapper.map(bookDto, Book.class)).thenReturn(book);
+        boolean response = bookShopServicesImp.addBook(bookDto);
+        Assert.assertEquals(true, response);
     }
+//    public BookDto(Long bookId,String bookName, String authorName, String bookEdition, Double price, String description, Long quantity) {
 
     @Test
     void givenBookData_WhenTryToAddNull_ShouldThrowException() {
-        try {
-            bookShopServicesImp.addBook(null);
-        } catch (BookStoreException e) {
-            Assert.assertEquals(BookStoreException.ExceptionType.CANT_ADD_NULL_DATA, e.getType());
-        }
+        bookShopServicesImp.addBook(null);
     }
 }
