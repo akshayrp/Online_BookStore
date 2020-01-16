@@ -12,16 +12,19 @@ public class MailDto {
     private String bookTitle;
     private int bookQuantity;
     private double totalPrice;
+    private long consumerId;
 
     public MailDto() {
     }
 
-    public MailDto(String consumerName, String consumerEmail, int bookId, String bookTitle, int bookQuantity, double totalPrice) {
-        this.consumerName = consumerName;
-        this.consumerEmail = consumerEmail;
+
+    public MailDto(String name, String email, int bookId, String bookName, int quantity, double totalPrice, long consumerId) {
+        this.consumerId = consumerId;
+        this.consumerName = name;
         this.bookId = bookId;
-        this.bookTitle = bookTitle;
-        this.bookQuantity = bookQuantity;
+        this.consumerEmail = email;
+        this.bookTitle = bookName;
+        this.bookQuantity = quantity;
         this.totalPrice = totalPrice;
     }
 }

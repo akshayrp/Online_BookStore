@@ -54,10 +54,10 @@ public class OrderConfirmationService {
     public ResponseHelper confirmOrderAndSendMail(Long consumerId)  {
         consumer = consumerRepository.findById(consumerId);
         MailDto mailDto = new MailDto(consumer.get().getName(), consumer.get().getEmail(), book.getBookId(),
-                book.getBookName(), book.getQuantity(), this.getTotalPrice());
+                book.getBookName(), book.getQuantity(), this.getTotalPrice(),consumer.get().getConsumerId());
         mailData.setMailData(mailDto);
         try {
-            bookStoreServices.updateQuantity(this.book.getBookId(), this.book.getQuantity());
+            bookStoreServices.updateQuantity(this.book.getBookId(), this.book.getQuantity(),book);
         } catch (BookStoreException e) {
             e.getMessage();
         }

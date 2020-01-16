@@ -19,11 +19,7 @@ repositories     {
 }
 
 dependencies {
-//<<<<<<< HEAD
     testCompile group: 'junit', name: 'junit', version: '4.4'
-//=======
-
-//>>>>>>> a2973254054708a895e6d428ec7502ed9be800e5
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
@@ -37,7 +33,6 @@ dependencies {
     compile group: 'com.h2database', name: 'h2', version: '1.4.200'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
     }
-//<<<<<<< HEAD
     compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '3.0.0'
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
@@ -47,10 +42,7 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.3.6.Final'
     compile group: 'org.hibernate', name: 'hibernate-validator-annotation-processor', version: '5.0.0.Alpha1'
-
-//=======
     implementation 'org.jetbrains:annotations:15.0'
-//>>>>>>> a2973254054708a895e6d428ec7502ed9be800e5
 
 
 }

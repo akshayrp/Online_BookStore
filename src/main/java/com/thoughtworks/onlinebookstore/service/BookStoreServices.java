@@ -24,8 +24,8 @@ public class BookStoreServices implements IBookStoreServices {
     @Override
     public boolean addBook(BookDto bookDto) {
         Book book = mapper.map(bookDto, Book.class);
-        Optional<Book> bookExist = bookShopRepository.findByAuthorNameAndBookEditionAndBookName(book.getBookName(),
-                book.getAuthorName(), book.getBookEdition());
+        Optional<Book> bookExist = bookShopRepository.findByAuthorNameAndBookName(book.getBookName(),
+                book.getAuthorName());
         if (!bookExist.isPresent()) {
             bookShopRepository.save(book);
             return true;
@@ -45,7 +45,7 @@ public class BookStoreServices implements IBookStoreServices {
     }
 
     @Override
-    public void updateQuantity(int id, int purchasedQuantity) throws BookStoreException {
+    public void updateQuantity(int id, int purchasedQuantity,Book book) throws BookStoreException {
         int dbQuantity = bookShopRepository.findById(book.getBookId()).get().getQuantity();
         if (dbQuantity < purchasedQuantity || purchasedQuantity < 1) {
             throw new BookStoreException("Please enter book quantity greater than 0 or more than available books" + dbQuantity, BookStoreException.ExceptionType.INVALID_BOOK_QUANTITY);
