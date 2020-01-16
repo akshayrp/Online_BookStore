@@ -55,8 +55,8 @@ public class OrderConfirmationService {
         MailDto mailDto = new MailDto(consumer.get().getName(), consumer.get().getEmail(), book.getBookId(),
                 book.getBookName(), book.getQuantity(), this.getTotalPrice());
         mailData.setMailData(mailDto);
-        emailSender.send(mailData.setDataForBackOffice(companyEmail));
-        emailSender.send(mailData.setDataForCustomer(companyEmail, mailDto.getConsumerEmail(),
+        emailSender.send(setDataForBackOffice(companyEmail));
+        emailSender.send(setDataForCustomer(companyEmail, mailDto.getConsumerEmail(),
                 "TallTalesBooks Order Confirmation", mailData.getMailDataForCustomer()));
         saveOrderDetails();
         bookStoreServices.updateQuantity(this.book.getBookId(), this.book.getQuantity());
@@ -79,6 +79,24 @@ public class OrderConfirmationService {
         Book bookById = bookStoreServices.getBookById(id);
         this.book = new Book(bookById.getBookId(), bookById.getBookName(), bookById.getPrice(), quantity);
         return bookById;
+    }
+
+    private SimpleMailMessage setDataForCustomer(String from, String to, String subject, String text) {
+        SimpleMailMessage userMessage = new SimpleMailMessage();
+        userMessage.setFrom(from);
+        userMessage.setTo(to);
+        userMessage.setSubject(subject);
+        userMessage.setText(text);
+        return userMessage;
+    }
+
+    private SimpleMailMessage setDataForBackOffice(String from) {
+        SimpleMailMessage backOfficeMessage = new SimpleMailMessage();
+        backOfficeMessage.setFrom(from);
+        backOfficeMessage.setTo(backOfficeEmail);
+        backOfficeMessage.setSubject("Order Received");
+        backOfficeMessage.setText(mailData.getMailDataForBackOffice());
+        return backOfficeMessage;
     }
 }
 
