@@ -13,14 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.List;
 
 //import com.thoughtworks.onlinebookstore.dto.BookDto;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/TallTalesBooks")
 @RestController
@@ -55,9 +52,10 @@ public class OnlineBookShopController {
     @GetMapping("/get/{id}")
     public Book getById(@PathVariable int id, @RequestParam(value = "quantity") int quantity) {
         return orderConfirmationService.getBookById(id,quantity);
+
     }
 
-    @RequestMapping("/getUserDetails")
+    @PostMapping(value = "/getUserDetails")
     public String addUserDetails(@RequestBody Consumer consumer) throws BookStoreException {
         try {
             return orderConfirmationService.setDetails(consumer);
@@ -66,9 +64,11 @@ public class OnlineBookShopController {
         }
     }
 
-    @GetMapping("/confirmOrder")
-    public Response confirmOrder() {
-    return orderConfirmationService.confirmOrderAndSendMail();
+
+    @PostMapping("/confirmOrder/{consumerId}")
+    public Response confirmOrder(@PathVariable Long consumerId) {
+    return orderConfirmationService.confirmOrderAndSendMail(consumerId);
     }
+
 
 }

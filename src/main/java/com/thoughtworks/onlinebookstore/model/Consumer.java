@@ -1,23 +1,28 @@
 package com.thoughtworks.onlinebookstore.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Consumer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long consumerId;
     private String country;
     private String name;
     private String email;
     private String address;
-    private CharSequence pinCode;
+    private String pinCode;
 
-    public Consumer() {
+    public long getConsumerId() {
+        return consumerId;
     }
 
-    public Consumer(String name, String email, String address, CharSequence pinCode, String country) {
-        this.name = name;
-        this.email = email;
-        this.address = address;
-        this.pinCode = pinCode;
-        this.country = country;
+    public String getCountry() {
+        return country;
     }
-
 
     public String getName() {
         return name;
@@ -31,22 +36,7 @@ public class Consumer {
         return address;
     }
 
-    public CharSequence getPinCode() {
+    public String getPinCode() {
         return pinCode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    @Override
-    public String toString() {
-        return "MyUser{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", pinCode=" + pinCode +
-                ", country='" + country + '\'' +
-                '}';
     }
 }

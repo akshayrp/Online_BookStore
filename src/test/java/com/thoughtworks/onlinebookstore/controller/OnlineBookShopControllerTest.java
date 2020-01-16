@@ -89,7 +89,7 @@ public class OnlineBookShopControllerTest {
 
     @Test
     public void givenOnUserDetailsPage_whenClickedOnBuyButton_ShouldGetUserDeliveryDetails() {
-        Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "202111", "India");
+        Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "202111", "india");
         try {
             when(orderConfirmationService.setDetails(consumer)).thenReturn(consumer.toString());
             String actual = controller.addUserDetails(consumer);
@@ -100,7 +100,7 @@ public class OnlineBookShopControllerTest {
 
     @Test
     public void givenUserDetailsPage_WhenUserEntersWrongDetials_ShouldThrowException() {
-        Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "2021", "India");
+        Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "2021", "usa");
         BookStoreException expectedException = mock(BookStoreException.class);
         try {
             when(orderConfirmationService.setDetails(consumer)).thenThrow(expectedException);

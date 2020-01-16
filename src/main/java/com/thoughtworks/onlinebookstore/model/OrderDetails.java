@@ -13,7 +13,6 @@ public class OrderDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int orderId;
-
     private int bookId;
     private String bookName;
     private String consumerName;
@@ -23,7 +22,7 @@ public class OrderDetails {
     public OrderDetails() {
     }
 
-    public OrderDetails(int bookId,String bookName,String consumerName,String consumerEmail,double totalPrice) {
+    public OrderDetails(int bookId, String bookName, String consumerName, String consumerEmail, double totalPrice) {
         this.bookId = bookId;
         this.bookName = bookName;
         this.consumerName = consumerName;

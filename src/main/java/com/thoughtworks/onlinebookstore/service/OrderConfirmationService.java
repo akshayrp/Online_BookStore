@@ -2,12 +2,14 @@ package com.thoughtworks.onlinebookstore.service;
 
 import com.thoughtworks.onlinebookstore.Response.Response;
 import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
+import com.thoughtworks.onlinebookstore.dto.MailDto;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
 import com.thoughtworks.onlinebookstore.model.Books;
 import com.thoughtworks.onlinebookstore.model.Consumer;
 import com.thoughtworks.onlinebookstore.model.OrderDetails;
 import com.thoughtworks.onlinebookstore.repository.IBookShopRepository;
+import com.thoughtworks.onlinebookstore.repository.IConsumerRepository;
 import com.thoughtworks.onlinebookstore.repository.IOrderDetailsRepository;
 import com.thoughtworks.onlinebookstore.utility.MailData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,6 +28,10 @@ import java.util.regex.Pattern;
 
 @Service
 public class OrderConfirmationService {
+
+    private CountryType countryType;
+
+
     @Autowired
     IBookShopRepository bookShopRepository;
     @Autowired
@@ -32,16 +39,19 @@ public class OrderConfirmationService {
     @Autowired
     private Environment environment;
     @Autowired
-    IOrderDetailsRepository orderDetailsRepository;
+    private IOrderDetailsRepository orderDetailsRepository;
+
+    @Autowired
+    private IConsumerRepository consumerRepository;
+    @Autowired
+    MailData mailData;
 
     private OrderDetails orderDetails;
     private Book book;
-    private Consumer consumer;
+    private Optional<Consumer> consumer;
 
     private String companyEmail = "talltalesbookchembur@gmail.com";
     private String backOfficeEmail = "talltalesbookbackoffice@gmail.com";
-
-
 
     public List<Books> getAllBooks() throws BookStoreException {
         List<Books> booksList = bookShopRepository.findAll();
@@ -53,7 +63,7 @@ public class OrderConfirmationService {
 
     public Book getBookById(int id, int quantity) {
         Books byId = bookShopRepository.findById(id).get();
-        book = new Book(byId.getId(), byId.getTitle(), byId.getPrice(), quantity);
+        this.book = new Book(byId.getId(), byId.getTitle(), byId.getPrice(), quantity);
         return book;
     }
 
@@ -68,15 +78,20 @@ public class OrderConfirmationService {
         Matcher matcherForPin = patternForPin.matcher(consumer.getPinCode());
 
         if (matchObjName.matches() && matcherForEmail.matches() && matcherForPin.matches()) {
+            consumerRepository.save(consumer);
             return consumer.toString();
         }
         throw new BookStoreException("invalid details..please check your entered data", BookStoreException
                 .ExceptionType.INVALID_DETAIL);
     }
-    public Response confirmOrderAndSendMail() {
 
-        emailSender.send(setDataForCustomer(companyEmail, "akshaypatwari24@gmail.com"/*consumer.getEmail()*/,
-                "TallTalesBooks Order Confirmation", MailData.getMailDataForCustomer()));
+    public Response confirmOrderAndSendMail(long consumerId) {
+        consumer = consumerRepository.findById(consumerId);
+        MailDto mailDto = new MailDto(consumer.get().getName(), consumer.get().getEmail(), book.getId(), book.getBookName(),
+                book.getSelectedQuantity(), this.getTotalPrice());
+        mailData.setMailData(mailDto);
+        emailSender.send(setDataForCustomer(companyEmail, mailDto.getConsumerEmail(),
+                "TallTalesBooks Order Confirmation", mailData.getMailDataForCustomer()));
 
         emailSender.send(setDataForBackOffice(companyEmail));
 
@@ -88,8 +103,12 @@ public class OrderConfirmationService {
     }
 
     private void saveOrderDetails() {
-        orderDetails = new OrderDetails(book.getId(),book.getBookName(),/*consumer.getName()*/"Akshay",
-                /*consumer.getEmail()*/"akshaypatwari24@gmail.com",120);
+
+        int totalPrice = this.getTotalPrice();
+        orderDetails = new OrderDetails(book.getId(), book.getBookName(), consumer.get().getName(),
+                consumer.get().getEmail(), totalPrice);
+        System.out.println(orderDetails.toString());
+
         orderDetailsRepository.save(orderDetails);
     }
 
@@ -116,9 +135,17 @@ public class OrderConfirmationService {
         backOfficeMessage.setFrom(from);
         backOfficeMessage.setTo(backOfficeEmail);
         backOfficeMessage.setSubject("Order Received");
-        backOfficeMessage.setText(MailData.getMailDataForBackOffice());
+        backOfficeMessage.setText(mailData.getMailDataForBackOffice());
         return backOfficeMessage;
     }
+
+    public int getTotalPrice() {
+        if (consumer.get().getCountry().equalsIgnoreCase("India"))
+            return (int) ((this.book.getPrice() * book.getSelectedQuantity()) + countryType.INDIA.shippingCharges);
+        return (int) ((this.book.getPrice() * book.getSelectedQuantity()) + countryType.OTHER_COUNTRY.shippingCharges);
+
+    }
 }
+
 
 

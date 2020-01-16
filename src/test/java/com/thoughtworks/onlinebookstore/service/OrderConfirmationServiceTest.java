@@ -2,6 +2,7 @@ package com.thoughtworks.onlinebookstore.service;
 
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Books;
+import com.thoughtworks.onlinebookstore.model.Consumer;
 import com.thoughtworks.onlinebookstore.repository.IBookShopRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,6 +14,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -60,4 +63,9 @@ public class OrderConfirmationServiceTest {
         }
     }
 
+    @Test
+    public void name() {
+        Consumer mockedConsumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "201901", "India");
+        int totalPrice = orderConfirmationService.getTotalPrice();
+    }
 }

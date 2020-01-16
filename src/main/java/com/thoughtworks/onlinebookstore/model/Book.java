@@ -19,26 +19,7 @@ public class Book {
     private String description;
     private int selectedQuantity;
 
-    public Book(int id, String bookName, Double price, int selectedQuantity) {
-        this.id = id;
-        this.bookName = bookName;
-        this.price = price;
-        this.selectedQuantity = selectedQuantity;
-    }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public int getSelectedQuantity() {
-        return selectedQuantity;
+    public Book(int id, String title, double price, int quantity) {
     }
 }
