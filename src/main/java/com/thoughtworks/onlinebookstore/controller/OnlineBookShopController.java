@@ -6,6 +6,7 @@ import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
 import com.thoughtworks.onlinebookstore.model.Consumer;
 import com.thoughtworks.onlinebookstore.service.IBookStoreServices;
+import com.thoughtworks.onlinebookstore.service.IConsumerServices;
 import com.thoughtworks.onlinebookstore.service.OrderConfirmationService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class OnlineBookShopController {
     private OrderConfirmationService orderConfirmationService;
     @Autowired
     private IBookStoreServices bookStoreServices;
+    @Autowired
+    private IConsumerServices consumerServices;
 
     @PostMapping("/addBook")
     @ApiOperation("Api for Add Book")
@@ -37,23 +40,25 @@ public class OnlineBookShopController {
     }
 
     @GetMapping("/list")
+    @ApiOperation("Api for getting all Books In Inventory")
     public List<Book> getList() throws BookStoreException {
-        List<Book> bookList = null;
-        bookList = bookStoreServices.getAllBooks();
-        return bookList;
+        return bookStoreServices.getAllBooks();
     }
 
     @GetMapping("/get/{id}/{quantity}")
+    @ApiOperation("Api for Get Book")
     public Book getById(@PathVariable int id, @PathVariable int quantity) {
         return orderConfirmationService.getPurchasingBook(id, quantity);
     }
 
     @PostMapping(value = "/getUserDetails")
+    @ApiOperation("Api for Add Consumer")
     public Consumer addUserDetails(@Valid @RequestBody Consumer consumer) {
-        return orderConfirmationService.setDetails(consumer);
+        return consumerServices.setDetails(consumer);
     }
 
     @PostMapping("/confirmOrder/{consumerId}")
+    @ApiOperation("Api for Confirm Order")
     public ResponseHelper confirmOrder(@Valid @PathVariable Long consumerId) {
         return orderConfirmationService.confirmOrderAndSendMail(consumerId);
     }

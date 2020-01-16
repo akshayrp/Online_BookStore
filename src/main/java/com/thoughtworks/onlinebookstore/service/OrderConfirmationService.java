@@ -2,7 +2,6 @@ package com.thoughtworks.onlinebookstore.service;
 
 import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
 import com.thoughtworks.onlinebookstore.dto.MailDto;
-import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
 import com.thoughtworks.onlinebookstore.model.Consumer;
 import com.thoughtworks.onlinebookstore.model.OrderDetails;
@@ -12,18 +11,15 @@ import com.thoughtworks.onlinebookstore.utility.MailData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@SuppressWarnings("ALL")
 @PropertySource("classpath:SuccessMessage.properties")
-
 @Service
 public class OrderConfirmationService {
-
-    private CountryType countryType;
 
     @Autowired
     private BookStoreServices bookStoreServices;
@@ -37,7 +33,10 @@ public class OrderConfirmationService {
     private JavaMailSender emailSender;
     @Autowired
     private Environment environment;
+    @Autowired
+    private SetDataForMail setDataForMail;
 
+    private CountryType countryType;
     private OrderDetails orderDetails;
     private Book book;
     private Optional<Consumer> consumer;
@@ -45,18 +44,13 @@ public class OrderConfirmationService {
     private String companyEmail = "talltalesbookchembur@gmail.com";
     private String backOfficeEmail = "talltalesbookbackoffice@gmail.com";
 
-
-    public Consumer setDetails(Consumer consumer) {
-        return consumerRepository.save(consumer);
-    }
-
     public ResponseHelper confirmOrderAndSendMail(long consumerId) {
         consumer = consumerRepository.findById(consumerId);
         MailDto mailDto = new MailDto(consumer.get().getName(), consumer.get().getEmail(), book.getBookId(),
                 book.getBookName(), book.getQuantity(), this.getTotalPrice());
         mailData.setMailData(mailDto);
-        emailSender.send(setDataForBackOffice(companyEmail));
-        emailSender.send(setDataForCustomer(companyEmail, mailDto.getConsumerEmail(),
+        emailSender.send(setDataForMail.setDataForBackOffice());
+        emailSender.send(setDataForMail.setDataForCustomer(companyEmail, mailDto.getConsumerEmail(),
                 "TallTalesBooks Order Confirmation", mailData.getMailDataForCustomer()));
         saveOrderDetails();
         bookStoreServices.updateQuantity(this.book.getBookId(), this.book.getQuantity());
@@ -79,24 +73,6 @@ public class OrderConfirmationService {
         Book bookById = bookStoreServices.getBookById(id);
         this.book = new Book(bookById.getBookId(), bookById.getBookName(), bookById.getPrice(), quantity);
         return bookById;
-    }
-
-    private SimpleMailMessage setDataForCustomer(String from, String to, String subject, String text) {
-        SimpleMailMessage userMessage = new SimpleMailMessage();
-        userMessage.setFrom(from);
-        userMessage.setTo(to);
-        userMessage.setSubject(subject);
-        userMessage.setText(text);
-        return userMessage;
-    }
-
-    private SimpleMailMessage setDataForBackOffice(String from) {
-        SimpleMailMessage backOfficeMessage = new SimpleMailMessage();
-        backOfficeMessage.setFrom(from);
-        backOfficeMessage.setTo(backOfficeEmail);
-        backOfficeMessage.setSubject("Order Received");
-        backOfficeMessage.setText(mailData.getMailDataForBackOffice());
-        return backOfficeMessage;
     }
 }
 
