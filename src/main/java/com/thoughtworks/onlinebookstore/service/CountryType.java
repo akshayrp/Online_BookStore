@@ -1,16 +1,17 @@
 package com.thoughtworks.onlinebookstore.service;
 
-public enum CountryType implements ICountryType{
+import org.springframework.stereotype.Service;
+
+
+public enum CountryType {
     INDIA(50), OTHER_COUNTRY(200);
 
-    private final int shippingCharges;
+    public int shippingCharges;
 
     CountryType(int shippingCharges) {
         this.shippingCharges = shippingCharges;
     }
 
-    @Override
-    public int shippingAmount() {
-        return this.shippingCharges;
+    CountryType() {
     }
 }

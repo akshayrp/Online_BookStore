@@ -4,7 +4,6 @@ import com.thoughtworks.onlinebookstore.Response.Response;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Books;
 import com.thoughtworks.onlinebookstore.model.Consumer;
-import com.thoughtworks.onlinebookstore.service.CountryType;
 import com.thoughtworks.onlinebookstore.service.OrderConfirmationService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -92,7 +91,7 @@ public class OnlineBookShopControllerTest {
 
     @Test
     public void givenOnUserDetailsPage_whenClickedOnBuyButton_ShouldGetUserDeliveryDetails() {
-        Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "202111", CountryType.INDIA);
+        Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "202111", "india");
         try {
             when(orderConfirmationService.setDetails(consumer)).thenReturn(consumer.toString());
             String actual = controller.addUserDetails(consumer);
@@ -103,7 +102,7 @@ public class OnlineBookShopControllerTest {
 
     @Test
     public void givenUserDetailsPage_WhenUserEntersWrongDetials_ShouldThrowException() {
-        Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "2021", CountryType.OTHER_COUNTRY);
+        Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "2021", "usa");
         BookStoreException expectedException = mock(BookStoreException.class);
         try {
             when(orderConfirmationService.setDetails(consumer)).thenThrow(expectedException);
