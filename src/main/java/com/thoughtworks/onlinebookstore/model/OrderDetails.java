@@ -1,5 +1,9 @@
 package com.thoughtworks.onlinebookstore.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
@@ -9,12 +13,15 @@ import javax.persistence.Id;
 
 @Component
 @Entity
+@Data
 public class OrderDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int orderId;
     private int bookId;
     private String bookName;
+    private String name;
+    private String email;
     private String consumerName;
     private String consumerEmail;
     private double totalPrice;
@@ -22,35 +29,11 @@ public class OrderDetails {
     public OrderDetails() {
     }
 
-    public OrderDetails(int bookId, String bookName, String consumerName, String consumerEmail, double totalPrice) {
+    public OrderDetails(int bookId, String bookName, String name, String email, double totalPrice) {
         this.bookId = bookId;
         this.bookName = bookName;
-        this.consumerName = consumerName;
-        this.consumerEmail = consumerEmail;
+        this.name = name;
+        this.email = email;
         this.totalPrice = totalPrice;
-    }
-
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public int getBookId() {
-        return bookId;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public String getConsumerName() {
-        return consumerName;
-    }
-
-    public String getConsumerEmail() {
-        return consumerEmail;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
     }
 }

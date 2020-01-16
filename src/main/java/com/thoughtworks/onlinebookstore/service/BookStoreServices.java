@@ -7,12 +7,8 @@ import com.thoughtworks.onlinebookstore.repository.IBookStoreRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.thoughtworks.onlinebookstore.model.Books;
-import com.thoughtworks.onlinebookstore.model.Consumer;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.Optional;
 
 @Service
@@ -34,10 +30,33 @@ public class BookStoreServices implements IBookStoreServices {
             return true;
         }
         bookExist.map(storedBook -> {
-            storedBook.setSelectedQuantity(storedBook.getSelectedQuantity() + bookDto.getQuantity());
+            storedBook.setQuantity(storedBook.getQuantity() + bookDto.getQuantity());
             bookShopRepository.save(storedBook);
             return storedBook;
         });
         return true;
+    }
+
+    @Override
+    public Book getBookById(int id) {
+        Book book = bookShopRepository.findById(id).get();
+        return book;
+    }
+
+    @Override
+    public void updateQuantity(int id, int purchasedQuantity) {
+        bookShopRepository.findById(id).map(book1 -> {
+            book1.setQuantity(book1.getQuantity() - purchasedQuantity);
+            return book1;
+        }).map(bookShopRepository::save);
+    }
+
+    @Override
+    public List<Book> getAllBooks() throws BookStoreException {
+        List<Book> booksList = bookShopRepository.findAll();
+        if (booksList == null) {
+            throw new BookStoreException("data not available", BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
+        }
+        return booksList;
     }
 }

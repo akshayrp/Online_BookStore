@@ -1,10 +1,9 @@
 package com.thoughtworks.onlinebookstore.controller;
 
-import com.thoughtworks.onlinebookstore.Response.Response;
+import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
 import com.thoughtworks.onlinebookstore.dto.BookDto;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
-import com.thoughtworks.onlinebookstore.model.Books;
 import com.thoughtworks.onlinebookstore.model.Consumer;
 import com.thoughtworks.onlinebookstore.service.IBookStoreServices;
 import com.thoughtworks.onlinebookstore.service.OrderConfirmationService;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-//import com.thoughtworks.onlinebookstore.dto.BookDto;
-
 @RequestMapping("/TallTalesBooks")
 @RestController
 public class OnlineBookShopController {
@@ -28,8 +25,9 @@ public class OnlineBookShopController {
     @Autowired
     private IBookStoreServices bookStoreServices;
 
-    @PostMapping()  @ApiOperation("Api for Add Book")
-    public ResponseEntity<Response> addBook(@Valid @RequestBody BookDto book) {
+    @PostMapping("/addBook")
+    @ApiOperation("Api for Add Book")
+    public ResponseEntity<ResponseHelper> addBook(@Valid @RequestBody BookDto book) {
         try {
             bookStoreServices.addBook(book);
             return new ResponseEntity("Book Added Successfully", HttpStatus.OK);
@@ -39,36 +37,24 @@ public class OnlineBookShopController {
     }
 
     @GetMapping("/list")
-    public List<Books> getList() throws BookStoreException {
-        List<Books> bookList = null;
-        try {
-            bookList = orderConfirmationService.getAllBooks();
-            return bookList;
-        } catch (BookStoreException e) {
-            throw new BookStoreException("data not available",BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
-        }
+    public List<Book> getList() throws BookStoreException {
+        List<Book> bookList = null;
+        bookList = bookStoreServices.getAllBooks();
+        return bookList;
     }
 
-    @GetMapping("/get/{id}")
-    public Book getById(@PathVariable int id, @RequestParam(value = "quantity") int quantity) {
-        return orderConfirmationService.getBookById(id,quantity);
-
+    @GetMapping("/get/{id}/{quantity}")
+    public Book getById(@PathVariable int id, @PathVariable int quantity) {
+        return orderConfirmationService.getPurchasingBook(id, quantity);
     }
 
     @PostMapping(value = "/getUserDetails")
-    public String addUserDetails(@RequestBody Consumer consumer) throws BookStoreException {
-        try {
-            return orderConfirmationService.setDetails(consumer);
-        } catch (BookStoreException e) {
-            throw new BookStoreException("invalid details..please check your entered data", BookStoreException.ExceptionType.INVALID_DETAIL);
-        }
+    public Consumer addUserDetails(@Valid @RequestBody Consumer consumer) {
+        return orderConfirmationService.setDetails(consumer);
     }
-
 
     @PostMapping("/confirmOrder/{consumerId}")
-    public Response confirmOrder(@PathVariable Long consumerId) {
-    return orderConfirmationService.confirmOrderAndSendMail(consumerId);
+    public ResponseHelper confirmOrder(@Valid @PathVariable Long consumerId) {
+        return orderConfirmationService.confirmOrderAndSendMail(consumerId);
     }
-
-
 }

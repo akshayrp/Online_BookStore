@@ -1,8 +1,10 @@
 package com.thoughtworks.onlinebookstore.dto;
 
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Component
+@Getter
 public class MailDto {
     private String consumerName;
     private String consumerEmail;
@@ -21,29 +23,5 @@ public class MailDto {
         this.bookTitle = bookTitle;
         this.bookQuantity = bookQuantity;
         this.totalPrice = totalPrice;
-    }
-
-    public String getConsumerName() {
-        return consumerName;
-    }
-
-    public int getBookId() {
-        return bookId;
-    }
-
-    public String getBookTitle() {
-        return bookTitle;
-    }
-
-    public int getBookQuantity() {
-        return bookQuantity;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public String getConsumerEmail() {
-        return consumerEmail;
     }
 }

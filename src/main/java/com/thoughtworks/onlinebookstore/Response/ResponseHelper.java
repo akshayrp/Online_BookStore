@@ -2,8 +2,11 @@ package com.thoughtworks.onlinebookstore.Response;
 
 
 public class ResponseHelper {
-    public static Response statusResponse(int code, String message) {
-        Response statusResponse = new Response(code,message);
-        return statusResponse;
+    private Object status;
+    private Object message;
+
+    public ResponseHelper(Object status, Object message) {
+        this.status = status;
+        this.message = message;
     }
 }

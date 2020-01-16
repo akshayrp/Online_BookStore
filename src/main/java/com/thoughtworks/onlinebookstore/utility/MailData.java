@@ -1,6 +1,7 @@
 package com.thoughtworks.onlinebookstore.utility;
 
 import com.thoughtworks.onlinebookstore.dto.MailDto;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,6 @@ public class MailData {
     public MailData() {
     }
 
-
     private MailDto mailDto;
 
     private  String bookingTime = LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG));
@@ -21,6 +21,9 @@ public class MailData {
     private  String shopAdd = "Tall Tales Book Shop,\nMalhotra Chambers,\nFirst floor, Govandi East,\nMumbai, Maharashtra 400088\n\n";
     private  String sincere = "Sincerely,\nTall Tales Book Shop\ntall-tales-book@gmail.com\n";
 
+
+    private String companyEmail = "talltalesbookchembur@gmail.com";
+    private String backOfficeEmail = "talltalesbookbackoffice@gmail.com";
     /////////////Customer Mail Details
 
 
@@ -45,6 +48,25 @@ public class MailData {
                 mailDto.getBookTitle() +
                 " | Quantity : " +
                 mailDto.getBookQuantity() + " | Total Book Price : "+mailDto.getTotalPrice()+"\n\n" + sincere;
+    }
+
+
+    public SimpleMailMessage setDataForCustomer(String from, String to, String subject, String text) {
+        SimpleMailMessage userMessage = new SimpleMailMessage();
+        userMessage.setFrom(from);
+        userMessage.setTo(to);
+        userMessage.setSubject(subject);
+        userMessage.setText(text);
+        return userMessage;
+    }
+
+    public SimpleMailMessage setDataForBackOffice(String from) {
+        SimpleMailMessage backOfficeMessage = new SimpleMailMessage();
+        backOfficeMessage.setFrom(from);
+        backOfficeMessage.setTo(backOfficeEmail);
+        backOfficeMessage.setSubject("Order Received");
+        backOfficeMessage.setText(this.getMailDataForBackOffice());
+        return backOfficeMessage;
     }
 
     public void setMailData(MailDto mailDto) {
