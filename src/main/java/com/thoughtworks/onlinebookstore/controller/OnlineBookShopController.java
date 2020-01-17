@@ -2,6 +2,7 @@ package com.thoughtworks.onlinebookstore.controller;
 
 import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
 import com.thoughtworks.onlinebookstore.dto.BookDto;
+import com.thoughtworks.onlinebookstore.dto.ConsumerDto;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
 import com.thoughtworks.onlinebookstore.model.Consumer;
@@ -48,14 +49,14 @@ public class OnlineBookShopController {
         return orderConfirmationService.getPurchasingBook(id, quantity);
     }
 
-    @PostMapping(value = "/getUserDetails")
-    public Consumer addUserDetails(@Valid @RequestBody Consumer consumer) {
+    @PostMapping(value = "/AddUserDetails")
+    public Consumer addUserDetails(@Valid @RequestBody ConsumerDto consumer) {
         return orderConfirmationService.setDetails(consumer);
     }
 
     @PostMapping("/confirmOrder/{consumerId}")
-    public ResponseHelper confirmOrder(@Valid @PathVariable Long consumerId) {
+    public String confirmOrder(@Valid @PathVariable Long consumerId) {
         ResponseHelper responseHelper = orderConfirmationService.confirmOrderAndSendMail(consumerId);
-        return responseHelper;
+        return responseHelper.toString();
     }
 }

@@ -8,7 +8,7 @@ public class OrderConfirmationWithoutMockTest {
 
     OrderConfirmationService orderConfirmationService = new OrderConfirmationService();
 
-    @Test
+   /* @Test
     public void givenOnUserDetailsPage_whenClickedOnBuyButton_ShouldGetUserDeliveryDetails() {
         Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "201901", "Indisa");
         Consumer newConsumer  = orderConfirmationService.setDetails(consumer);
@@ -18,5 +18,5 @@ public class OrderConfirmationWithoutMockTest {
     public void givenUserDetails_WhenUserEntersInvalidDetail_ShouldThrowException() {
         Consumer consumer = new Consumer("k", "p", "h", "20", "India");
         orderConfirmationService.setDetails(consumer);
-    }
+    }*/
 }

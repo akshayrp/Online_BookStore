@@ -31,7 +31,7 @@ public class OrderConfirmationServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
+    /*@Test
     public void givenBookStore_WhenClickOnHomePage_ShouldReturnList() {
         booksList = new ArrayList<>();
         Book books1 = new Book(1, "Chetan Bhagat", "The Girl in Room 105'", "afc", 100.0, "mre", 10);
@@ -52,7 +52,7 @@ public class OrderConfirmationServiceTest {
         orderConfirmationService.getAllBooks();
         int size = booksList.size();
         Assert.assertEquals(2, size);
-    }
+    }*/
 
     @Test
     public void name() {

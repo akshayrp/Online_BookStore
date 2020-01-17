@@ -1,6 +1,7 @@
 package com.thoughtworks.onlinebookstore.service;
 
 import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
+import com.thoughtworks.onlinebookstore.dto.ConsumerDto;
 import com.thoughtworks.onlinebookstore.dto.MailDto;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
@@ -9,6 +10,7 @@ import com.thoughtworks.onlinebookstore.model.OrderDetails;
 import com.thoughtworks.onlinebookstore.repository.IConsumerRepository;
 import com.thoughtworks.onlinebookstore.repository.IOrderDetailsRepository;
 import com.thoughtworks.onlinebookstore.utility.MailData;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -38,6 +40,8 @@ public class OrderConfirmationService {
     private JavaMailSender emailSender;
     @Autowired
     private Environment environment;
+    @Autowired
+    private ModelMapper mapper;
 
     private OrderDetails orderDetails;
     private Book book;
@@ -47,7 +51,8 @@ public class OrderConfirmationService {
     private String backOfficeEmail = "talltalesbookbackoffice@gmail.com";
 
 
-    public Consumer setDetails(Consumer consumer) {
+    public Consumer setDetails(ConsumerDto consumerDto) {
+        Consumer consumer = mapper.map(consumerDto, Consumer.class);
         return consumerRepository.save(consumer);
     }
 
