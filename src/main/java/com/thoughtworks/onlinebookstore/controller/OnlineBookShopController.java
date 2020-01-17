@@ -55,6 +55,7 @@ public class OnlineBookShopController {
 
     @PostMapping("/confirmOrder/{consumerId}")
     public ResponseHelper confirmOrder(@Valid @PathVariable Long consumerId) {
-        return orderConfirmationService.confirmOrderAndSendMail(consumerId);
+        ResponseHelper responseHelper = orderConfirmationService.confirmOrderAndSendMail(consumerId);
+        return responseHelper;
     }
 }

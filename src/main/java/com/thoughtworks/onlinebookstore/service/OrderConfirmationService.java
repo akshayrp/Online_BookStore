@@ -65,7 +65,6 @@ public class OrderConfirmationService {
         emailSender.send(setDataForCustomer(companyEmail, mailDto.getConsumerEmail(),
                 "TallTalesBooks Order Confirmation", mailData.getMailDataForCustomer()));
         saveOrderDetails();
-
         return new ResponseHelper(200, environment.getProperty("status.mail.MailSentSuccessFully"));
     }
 
