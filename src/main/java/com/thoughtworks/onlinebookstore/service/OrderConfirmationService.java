@@ -53,7 +53,9 @@ public class OrderConfirmationService {
 
     public Consumer setDetails(ConsumerDto consumerDto) {
         Consumer consumer = mapper.map(consumerDto, Consumer.class);
-        return consumerRepository.save(consumer);
+        consumerRepository.save(consumer);
+        String name = consumer.getName();
+        return consumerRepository.findConsumerByName(name);
     }
 
     public ResponseHelper confirmOrderAndSendMail(Long consumerId)  {
@@ -72,9 +74,6 @@ public class OrderConfirmationService {
         saveOrderDetails();
         return new ResponseHelper(200, environment.getProperty("status.mail.MailSentSuccessFully"));
     }
-
-
-
 
     private void saveOrderDetails() {
         orderDetails = new OrderDetails(book.getBookId(), book.getBookName(), consumer.get().getName(),
@@ -115,6 +114,7 @@ public class OrderConfirmationService {
     public List<Book> getAllBooks() throws BookStoreException {
     return bookStoreServices.getAllBooks();
     }
+
 }
 
 
