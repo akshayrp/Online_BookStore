@@ -1,5 +1,6 @@
 package com.thoughtworks.onlinebookstore.configuration;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -27,5 +28,10 @@ public class SwaggerConfiguration {
                 .contact(new Contact("Code Monsters", "www.bridgelabz.com", "poojatodkar124@gmail.com"))
                 .license("Apache 2.0").licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html").version("1.0.0")
                 .build();
+    }
+
+    @Bean
+    ModelMapper getModelMapperBean() {
+        return new ModelMapper();
     }
 }
