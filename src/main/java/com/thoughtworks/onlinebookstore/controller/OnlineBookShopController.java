@@ -20,7 +20,6 @@ import java.util.List;
 
 @CrossOrigin(origins = "*",allowedHeaders = "*")
 @RequestMapping("/TallTalesBooks")
-@CrossOrigin(allowedHeaders = "*", origins = "*")
 @RestController
 public class OnlineBookShopController {
 
