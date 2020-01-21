@@ -1,7 +1,7 @@
 package com.thoughtworks.onlinebookstore.service;
 
+import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
-import com.thoughtworks.onlinebookstore.model.Consumer;
 import com.thoughtworks.onlinebookstore.repository.IBookStoreRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,43 +20,43 @@ import static org.mockito.Mockito.when;
 public class OrderConfirmationServiceTest {
 
     List<Book> booksList;
+    List<Book> booksList1;
+
     @Mock
     private IBookStoreRepository mockedBookShopRepository;
 
     @InjectMocks
-    private OrderConfirmationService orderConfirmationService;
+    private BookStoreServices storeServices;
 
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
 
-    /*@Test
-    public void givenBookStore_WhenClickOnHomePage_ShouldReturnList() {
+    @Test
+    public void givenBookStore_WhenClickOnHomePage_ShouldReturnList() throws BookStoreException {
         booksList = new ArrayList<>();
-        Book books1 = new Book(1, "Chetan Bhagat", "The Girl in Room 105'", "afc", 100.0, "mre", 10);
+        booksList1 = new ArrayList<>();
+
+        Book books1 = new Book("pooja",100,10,"author","abcd","hello");
         booksList.add(books1);
         when(mockedBookShopRepository.findAll()).thenReturn(booksList);
-        orderConfirmationService.getAllBooks();
-        Assert.assertEquals("Chetan Bhagat", booksList.get(0).getAuthorName());
+       booksList1 = storeServices.getAllBooks();
+        Assert.assertEquals("author", booksList1.get(0).getAuthorName());
     }
 
     @Test
-    public void givenBookStore_WhenClickOnHomePage_ShouldReturnTotalSizeOfRecord() {
+    public void givenBookStore_WhenClickOnHomePage_ShouldReturnTotalSizeOfRecord() throws BookStoreException {
         booksList = new ArrayList<>();
-        Book books1 = new Book(1, "Chetan Bhagat", "The Girl in Room 105'", "afc", 100.0, "mre", 10);
-        Book books2 = new Book(1, "Sargam Pandey", "The Girl in Room 105'", "afc", 100.0, "mre", 10);
+        Book books1 = new Book("pooja",100,10,"author","abcd","hello");
+        Book books2 = new Book("pooja1",100,10,"author1","abcd1","hello1");
         booksList.add(books1);
         booksList.add(books2);
         when(mockedBookShopRepository.findAll()).thenReturn(booksList);
-        orderConfirmationService.getAllBooks();
+        storeServices.getAllBooks();
         int size = booksList.size();
         Assert.assertEquals(2, size);
-    }*/
-
-    @Test
-    public void name() {
-        Consumer mockedConsumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "201901", "India");
-        double totalPrice = orderConfirmationService.getTotalPrice();
     }
+
+
 }

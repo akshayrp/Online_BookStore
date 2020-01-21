@@ -19,35 +19,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class BookShopServiceImpTest {
 
-    @Mock
-    private IBookStoreRepository bookShopRepository;
-    @Mock
-    private ModelMapper mapper;
+public class BookShopServiceImpTest {
 
     @InjectMocks
     private BookStoreServices bookShopServicesImp = new BookStoreServices();
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
-
-   /* @Test
-    void givenBook_WhenAddedToDB_ShouldReturnTrue_Mock() {
-        BookDto bookDto = new BookDto(1,"PrinceBio", "Prince Singh", "1.0",150D, "Biography Prince Singh", 10);
-        Book book = mock(Book.class);
-        when(bookShopRepository.save(any())).thenReturn(new Book());
-        when(mapper.map(bookDto, Book.class)).thenReturn(book);
-        boolean response = bookShopServicesImp.addBook(bookDto);
-        Assert.assertEquals(true, response);
-    }*/
-//    public BookDto(Long bookId,String bookName, String authorName, String bookEdition, Double price, String description, Long quantity) {
-
     @Test
     void givenBookData_WhenTryToAddNull_ShouldThrowException() {
-        bookShopServicesImp.addBook(null);
+        try {
+            bookShopServicesImp.addBook(null);
+        } catch (Exception e) {
+            Assert.assertEquals(null, e.getMessage());
+        }
     }
 }

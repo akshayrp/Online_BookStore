@@ -2,6 +2,7 @@ package com.thoughtworks.onlinebookstore.dto;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 
@@ -20,7 +21,7 @@ public class ConsumerDto {
     @NotBlank(message = "Please Enter Valid Address")
     private String address;
 
-    @NotBlank(message = "Please Enter Valid Pin")
+    @NotNull(message = "Please Enter Valid Pin")
     @Pattern(regexp = ("^[1-9][0-9]{5}$"))
     private String pinCode;
 

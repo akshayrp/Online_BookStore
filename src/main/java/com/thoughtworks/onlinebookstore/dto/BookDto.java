@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class BookDto {
+public class    BookDto {
 
     @NotBlank(message = "BookName can't be null")
     private String bookName;

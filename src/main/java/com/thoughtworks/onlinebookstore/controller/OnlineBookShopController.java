@@ -15,9 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/TallTalesBooks")
+@CrossOrigin(allowedHeaders = "*", origins = "*")
 @RestController
 public class OnlineBookShopController {
 
@@ -39,9 +41,12 @@ public class OnlineBookShopController {
 
     @GetMapping("/list")
     public List<Book> getList() throws BookStoreException {
-        List<Book> bookList = null;
-        bookList = bookStoreServices.getAllBooks();
-        return bookList;
+
+        try {
+            return bookStoreServices.getAllBooks();
+        } catch (BookStoreException e) {
+            throw new BookStoreException("data not available", BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
+        }
     }
 
     @GetMapping("/get/{id}/{quantity}")
@@ -52,6 +57,7 @@ public class OnlineBookShopController {
     @PostMapping(value = "/AddUserDetails")
     public Consumer addUserDetails(@Valid @RequestBody ConsumerDto consumer) {
         return orderConfirmationService.setDetails(consumer);
+
     }
 
     @PostMapping("/confirmOrder/{consumerId}")

@@ -30,16 +30,22 @@ public class OrderConfirmationService {
 
     @Autowired
     private BookStoreServices bookStoreServices;
+
     @Autowired
     private IOrderDetailsRepository orderDetailsRepository;
+
     @Autowired
     private IConsumerRepository consumerRepository;
+
     @Autowired
     private MailData mailData;
+
     @Autowired
     private JavaMailSender emailSender;
+
     @Autowired
     private Environment environment;
+
     @Autowired
     private ModelMapper mapper;
 

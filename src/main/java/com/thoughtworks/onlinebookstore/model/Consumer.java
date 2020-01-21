@@ -61,5 +61,17 @@ public class Consumer {
     public String getPinCode() {
         return pinCode;
     }
+
+    @Override
+    public String toString() {
+        return "Consumer{" +
+                "consumerId=" + consumerId +
+                ", country='" + country + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", pinCode='" + pinCode + '\'' +
+                '}';
+    }
 }
 
