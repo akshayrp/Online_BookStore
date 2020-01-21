@@ -34,4 +34,5 @@ public class SwaggerConfiguration {
     ModelMapper getModelMapperBean() {
         return new ModelMapper();
     }
+
 }
