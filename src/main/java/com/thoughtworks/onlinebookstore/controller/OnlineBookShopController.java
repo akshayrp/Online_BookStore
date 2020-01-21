@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 @RequestMapping("/TallTalesBooks")
 @CrossOrigin(allowedHeaders = "*", origins = "*")
 @RestController
@@ -31,6 +32,7 @@ public class OnlineBookShopController {
     @PostMapping("/addBook")
     @ApiOperation("Api for Add Book")
     public ResponseEntity<ResponseHelper> addBook(@Valid @RequestBody BookDto book) {
+        System.out.println("sout to add commit msg into github and run build on jenkins");
         try {
             bookStoreServices.addBook(book);
             return new ResponseEntity("Book Added Successfully", HttpStatus.OK);
