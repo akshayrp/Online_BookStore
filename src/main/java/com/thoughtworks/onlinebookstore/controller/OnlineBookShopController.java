@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/TallTalesBooks")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class OnlineBookShopController {
 
@@ -49,6 +50,7 @@ public class OnlineBookShopController {
         return orderConfirmationService.getPurchasingBook(id, quantity);
     }
 
+//    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "/AddUserDetails")
     public Consumer addUserDetails(@Valid @RequestBody ConsumerDto consumer) {
         return orderConfirmationService.setDetails(consumer);

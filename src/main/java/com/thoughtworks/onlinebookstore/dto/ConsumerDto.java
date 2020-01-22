@@ -21,7 +21,7 @@ public class ConsumerDto {
     private String address;
 
     @NotBlank(message = "Please Enter Valid Pin")
-    @Pattern(regexp = ("^[1-9][0-9]{5}$"))
+//    @Pattern(regexp = ("^[1-9][0-9]{5}$"))
     private String pinCode;
 
 

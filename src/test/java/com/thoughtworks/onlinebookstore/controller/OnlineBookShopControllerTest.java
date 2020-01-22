@@ -72,13 +72,12 @@ public class OnlineBookShopControllerTest {
         } catch (BookStoreException e) {
             Assert.assertEquals(BookStoreException.ExceptionType.DATA_NOT_AVAILABLE, e.getType());
         }
-
     }
 
-   /* @Test
+    @Test
     public void givenBookStore_WhenClickOnHomePage_ShouldReturnTotalSizeOfRecord() {
         mockBookList = new ArrayList<>();
-        Book books1 = new Book(1, "Chetan Bhagat", "The Girl in Room 105'", "afc", 100.0, "mre", 10);
+        Book books1 = new Book( "The Girl in Room 105'",100.0, 10,"Chetan Bhagat" , "image.src", "asdf");
         Book books2 = new Book();
         mockBookList.add(books2);
         mockBookList.add(books1);
@@ -87,11 +86,9 @@ public class OnlineBookShopControllerTest {
             controller.getList();
             int size = mockBookList.size();
             Assert.assertEquals(2, size);
-        } catch (BookStoreException e) {
-
-        }
+        } catch (BookStoreException e) { }
     }
-*/
+
    /* @Test
     public void givenOnUserDetailsPage_whenClickedOnBuyButton_ShouldGetUserDeliveryDetails() {
         Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "202111", "india");
