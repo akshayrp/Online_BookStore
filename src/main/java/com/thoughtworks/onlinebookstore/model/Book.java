@@ -1,7 +1,6 @@
 package com.thoughtworks.onlinebookstore.model;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
@@ -11,6 +10,7 @@ public class Book {
     public Book() { }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int bookId;
     private String bookName;
     private String authorName;

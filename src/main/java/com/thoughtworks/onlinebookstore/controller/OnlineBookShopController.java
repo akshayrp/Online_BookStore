@@ -1,5 +1,4 @@
 package com.thoughtworks.onlinebookstore.controller;
-
 import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
 import com.thoughtworks.onlinebookstore.dto.BookDto;
 import com.thoughtworks.onlinebookstore.dto.ConsumerDto;
@@ -13,12 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 @RequestMapping("/TallTalesBooks")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class OnlineBookShopController {
 
@@ -30,6 +28,7 @@ public class OnlineBookShopController {
     @PostMapping("/addBook")
     @ApiOperation("Api for Add Book")
     public ResponseEntity<ResponseHelper> addBook(@Valid @RequestBody BookDto book) {
+        System.out.println("sout to add commit msg into github and run build on jenkins");
         try {
             bookStoreServices.addBook(book);
             return new ResponseEntity("Book Added Successfully", HttpStatus.OK);
@@ -40,9 +39,12 @@ public class OnlineBookShopController {
 
     @GetMapping("/list")
     public List<Book> getList() throws BookStoreException {
-        List<Book> bookList = null;
-        bookList = bookStoreServices.getAllBooks();
-        return bookList;
+
+        try {
+            return bookStoreServices.getAllBooks();
+        } catch (BookStoreException e) {
+            throw new BookStoreException("data not available", BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
+        }
     }
 
     @GetMapping("/get/{id}/{quantity}")
@@ -50,10 +52,10 @@ public class OnlineBookShopController {
         return orderConfirmationService.getPurchasingBook(id, quantity);
     }
 
-//    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "/AddUserDetails")
     public Consumer addUserDetails(@Valid @RequestBody ConsumerDto consumer) {
         return orderConfirmationService.setDetails(consumer);
+
     }
 
     @PostMapping("/confirmOrder/{consumerId}")

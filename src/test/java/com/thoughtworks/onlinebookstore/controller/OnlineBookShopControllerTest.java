@@ -1,9 +1,11 @@
 package com.thoughtworks.onlinebookstore.controller;
 
 import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
+import com.thoughtworks.onlinebookstore.dto.ConsumerDto;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
 import com.thoughtworks.onlinebookstore.model.Consumer;
+import com.thoughtworks.onlinebookstore.service.BookStoreServices;
 import com.thoughtworks.onlinebookstore.service.OrderConfirmationService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,7 +29,10 @@ import static org.mockito.Mockito.when;
 public class OnlineBookShopControllerTest {
 
     @Mock
-    private OrderConfirmationService orderConfirmationService;
+    private BookStoreServices storeServices;
+
+    @Mock
+    private OrderConfirmationService mockedOrderConfirmationService;
 
     @Autowired
     Environment environment;
@@ -43,31 +48,33 @@ public class OnlineBookShopControllerTest {
 
     @Test
     public void givenConfirmOrderButton_WhenClickedOnIt_ShouldSendmailToCustomerAndReturnBooleanTrue() {
-        ResponseHelper response = new ResponseHelper(200, environment.getProperty("status.mail.MailSentSuccessFully"));
-        when(orderConfirmationService.confirmOrderAndSendMail(any())).thenReturn(response);
+        ResponseHelper responseHelper = new ResponseHelper(100, "Mail Sent Successfully");
+        when(mockedOrderConfirmationService.confirmOrderAndSendMail(any())).thenReturn(responseHelper);
         String actualResponse = controller.confirmOrder(1l);
-        Assert.assertEquals(response.toString(), actualResponse);
+        Assert.assertEquals(responseHelper.toString(), actualResponse);
     }
 
-   /* @Test
+    @Test
     public void givenBookStore_WhenClickOnHomePage_ShouldReturnList() throws BookStoreException {
         mockBookList = new ArrayList<>();
-        Book books1 = new Book(1, "Chetan Bhagat", "The Girl in Room 105'", "afc", 100.0, "mre", 10);
+        Book books1 = new Book("Chetan Bhagat", 100, 10, "Chetan Bhagat", "abcd", "pooja");
         mockBookList.add(books1);
-        when(orderConfirmationService.getAllBooks()).thenReturn(mockBookList);
+        when(storeServices.getAllBooks()).thenReturn(mockBookList);
         String expectedAuthor = mockBookList.get(0).getAuthorName();
         controller.getList();
         Assert.assertEquals(expectedAuthor, "Chetan Bhagat");
-    }*/
+    }
 
     @Test
     public void givenBookStore_WhenClickOnHomePage_IfRecordListIsNull_ShouldThrowNullException() {
         mockBookList = new ArrayList<>();
-        Book book = new Book();
-        mockBookList.add(book);
+
+        Book book = null;
         try {
+            mockBookList.add(book);
+            mockBookList.forEach(System.out::println);
             BookStoreException expectedException = mock(BookStoreException.class);
-            when(orderConfirmationService.getAllBooks()).thenThrow(expectedException);
+            when(storeServices.getAllBooks()).thenThrow(expectedException);
             controller.getList();
         } catch (BookStoreException e) {
             Assert.assertEquals(BookStoreException.ExceptionType.DATA_NOT_AVAILABLE, e.getType());
@@ -77,31 +84,26 @@ public class OnlineBookShopControllerTest {
     @Test
     public void givenBookStore_WhenClickOnHomePage_ShouldReturnTotalSizeOfRecord() {
         mockBookList = new ArrayList<>();
-        Book books1 = new Book( "The Girl in Room 105'",100.0, 10,"Chetan Bhagat" , "image.src", "asdf");
+        Book books1 = new Book("Chetan Bhagat", 100, 10, "Chetan Bhagat", "abcd", "pooja");
         Book books2 = new Book();
         mockBookList.add(books2);
         mockBookList.add(books1);
         try {
-            when(orderConfirmationService.getAllBooks()).thenReturn(mockBookList);
+            when(storeServices.getAllBooks()).thenReturn(mockBookList);
             controller.getList();
             int size = mockBookList.size();
             Assert.assertEquals(2, size);
-        } catch (BookStoreException e) { }
-    }
-
-   /* @Test
-    public void givenOnUserDetailsPage_whenClickedOnBuyButton_ShouldGetUserDeliveryDetails() {
-        Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "202111", "india");
-        when(orderConfirmationService.setDetails(consumer)).thenReturn(consumer);
-        Consumer consumer1 = controller.addUserDetails(consumer);
-        Assert.assertEquals(consumer.toString(),consumer1.toString() );
+        } catch (BookStoreException e) {
+        }
     }
 
     @Test
-    public void givenUserDetailsPage_WhenUserEntersWrongDetials_ShouldThrowException() {
-        Consumer consumer = new Consumer("Karan", "karan24@gmail.com", "kharadi", "2021", "usa");
-        BookStoreException expectedException = mock(BookStoreException.class);
-        when(orderConfirmationService.setDetails(consumer)).thenThrow(expectedException);
-        controller.addUserDetails(consumer);
-    }*/
+    public void givenOnUserDetailsPage_whenClickedOnBuyButton_ShouldGetUserDeliveryDetails() {
+        ConsumerDto consumer = new ConsumerDto("pooja","pooja1@gmail.com","abc","213456","india");
+        Consumer consumer1 = new Consumer("pooja","pooja1@gmail.com","abc","213456","india");
+        when(mockedOrderConfirmationService.setDetails(consumer)).thenReturn(consumer1);
+        Consumer consumer2 = controller.addUserDetails(consumer);
+        Assert.assertEquals(consumer1.toString(),consumer2.toString() );
+    }
+
 }
