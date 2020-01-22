@@ -1,6 +1,5 @@
 package com.thoughtworks.onlinebookstore.Response;
 
-
 public class ResponseHelper {
     private int status;
     private String message;

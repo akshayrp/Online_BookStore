@@ -1,11 +1,13 @@
 package com.thoughtworks.onlinebookstore.utility;
 
 import com.thoughtworks.onlinebookstore.dto.MailDto;
+import com.thoughtworks.onlinebookstore.model.Book;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.List;
 
 @Service
 public class MailData {
@@ -13,6 +15,7 @@ public class MailData {
     }
 
     private MailDto mailDto;
+    private List<Book> bookList;
 
     private String bookingTime = LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG));
     private String Header = "\t\t\t\t\t\t\t\t\tPurchase Order Acceptance Letter\n\n";
@@ -39,17 +42,23 @@ public class MailData {
     }
 
     public String getMailDataForBackOffice() {
-        return Header + shopName + bookingTime + "\n\n" + shopAdd + managerGreetings + backOfficeMailData +
+        double finalPrice = 0;
+        String body = Header + shopName + bookingTime + "\n\n" + shopAdd + managerGreetings + backOfficeMailData +
                 "Order Number : " + mailDto.getBookId() + " | Order Date : "
                 + bookingTime +
                 " | Recipient Name : " +
-                mailDto.getConsumerName() + "\nBook Name : " +
-                mailDto.getBookTitle() +
-                " | Quantity : " +
-                mailDto.getBookQuantity() + " | Total Book Price : " + mailDto.getTotalPrice() + "\n\n" + sincere;
+                mailDto.getConsumerName() + "\nBook Name   | Quantity   | Total Book Price  \n";
+
+        String allBookData = "";
+        for (Book book : bookList) {
+            allBookData += book.getBookName() + "\t" + book.getQuantity() + "\t" + book.getQuantity() * book.getPrice() + "\n";
+            finalPrice = finalPrice + (book.getPrice() * book.getQuantity());
+        }
+        return body + allBookData + " Final Amount" + finalPrice + "\n\n" + sincere;
     }
 
-    public void setMailData(MailDto mailDto) {
+    public void setMailData(MailDto mailDto, List<Book> bookList) {
         this.mailDto = mailDto;
+        this.bookList = bookList;
     }
 }

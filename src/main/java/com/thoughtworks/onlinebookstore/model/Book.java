@@ -1,13 +1,15 @@
 package com.thoughtworks.onlinebookstore.model;
 
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
 @Data
 public class Book {
 
-    public Book() { }
+    public Book() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,7 +22,7 @@ public class Book {
     private int quantity;
 
 
-    public Book( String title, double price, int quantity, String authorName, String image, String description) {
+    public Book(String title, double price, int quantity, String authorName, String image, String description) {
         this.authorName = authorName;
         this.bookName = title;
         this.price = price;

@@ -47,14 +47,6 @@ public class OnlineBookShopControllerTest {
     List<Book> mockBookList;
 
     @Test
-    public void givenConfirmOrderButton_WhenClickedOnIt_ShouldSendmailToCustomerAndReturnBooleanTrue() {
-        ResponseHelper responseHelper = new ResponseHelper(100, "Mail Sent Successfully");
-        when(mockedOrderConfirmationService.confirmOrderAndSendMail(any())).thenReturn(responseHelper);
-        String actualResponse = controller.confirmOrder(1l);
-        Assert.assertEquals(responseHelper.toString(), actualResponse);
-    }
-
-    @Test
     public void givenBookStore_WhenClickOnHomePage_ShouldReturnList() throws BookStoreException {
         mockBookList = new ArrayList<>();
         Book books1 = new Book("Chetan Bhagat", 100, 10, "Chetan Bhagat", "abcd", "pooja");
@@ -68,7 +60,6 @@ public class OnlineBookShopControllerTest {
     @Test
     public void givenBookStore_WhenClickOnHomePage_IfRecordListIsNull_ShouldThrowNullException() {
         mockBookList = new ArrayList<>();
-
         Book book = null;
         try {
             mockBookList.add(book);
@@ -99,11 +90,11 @@ public class OnlineBookShopControllerTest {
 
     @Test
     public void givenOnUserDetailsPage_whenClickedOnBuyButton_ShouldGetUserDeliveryDetails() {
-        ConsumerDto consumer = new ConsumerDto("pooja","pooja1@gmail.com","abc","213456","india");
-        Consumer consumer1 = new Consumer("pooja","pooja1@gmail.com","abc","213456","india");
+        ConsumerDto consumer = new ConsumerDto("pooja", "pooja1@gmail.com", "abc", "213456", "india");
+        Consumer consumer1 = new Consumer("pooja", "pooja1@gmail.com", "abc", "213456", "india");
         when(mockedOrderConfirmationService.setDetails(consumer)).thenReturn(consumer1);
         Consumer consumer2 = controller.addUserDetails(consumer);
-        Assert.assertEquals(consumer1.toString(),consumer2.toString() );
+        Assert.assertEquals(consumer1.toString(), consumer2.toString());
     }
 
 }

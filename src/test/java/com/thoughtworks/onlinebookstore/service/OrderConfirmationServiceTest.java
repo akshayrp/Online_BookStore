@@ -1,8 +1,10 @@
 package com.thoughtworks.onlinebookstore.service;
 
+import com.thoughtworks.onlinebookstore.dto.MailDto;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
 import com.thoughtworks.onlinebookstore.repository.IBookStoreRepository;
+import com.thoughtworks.onlinebookstore.utility.MailData;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,4 +60,17 @@ public class OrderConfirmationServiceTest {
         Assert.assertEquals(2, size);
     }
 
+    @Test
+    public void givenBookStore_WhenPurchasedMultipleBooks_ShouldReturnString() {
+        booksList = new ArrayList<>();
+        Book books1 = new Book("The Girl in 105",200,10,"author","abcd","hello");
+        Book books2 = new Book("Da Vinci Code" +
+                "",100,10,"author1","abcd1","hello1");
+        booksList.add(books1);
+        booksList.add(books2);
+        MailDto mailDto = new MailDto("AAAAAAAAAAAAAA", "AAAAASSSSS", 1, "SSSSSSSSSSSSSSSSSs", 5, 100.0, 2);
+        MailData mailData = new MailData();
+        mailData.setMailData(mailDto,booksList);
+        System.out.println(mailData.getMailDataForBackOffice());
+    }
 }

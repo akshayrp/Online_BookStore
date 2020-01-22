@@ -14,5 +14,7 @@ public interface IBookStoreServices {
 
     Book getBookById(int id);
 
-    void updateQuantity(int id, int purchasedQuantity,Book book) throws BookStoreException;
+    void updateQuantity(int id, int purchasedQuantity, Book book) throws BookStoreException;
+
+    List<Book> getBookFromCart(List<Book> bookList);
 }

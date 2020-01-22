@@ -14,10 +14,10 @@ public class BookDto {
     @NotBlank(message = "AuthorName can't be null")
     private String authorName;
 
-    @NotNull( message = "Book price can't be null")
+    @NotNull(message = "Book price can't be null")
     private Double price;
 
-    @NotBlank( message = "Book image can't be null")
+    @NotBlank(message = "Book image can't be null")
     private String image;
 
     @NotBlank(message = "Description can't be null")
@@ -26,7 +26,7 @@ public class BookDto {
     @NotNull(message = "Book price can't be null")
     private Integer quantity;
 
-    public BookDto(String bookName, String authorName, Double price, String description, int quantity, String  image) {
+    public BookDto(String bookName, String authorName, Double price, String description, int quantity, String image) {
         this.bookName = bookName;
         this.authorName = authorName;
         this.price = price;

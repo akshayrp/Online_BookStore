@@ -17,7 +17,6 @@ public class MailDto {
     public MailDto() {
     }
 
-
     public MailDto(String name, String email, int bookId, String bookName, int quantity, double totalPrice, long consumerId) {
         this.consumerId = consumerId;
         this.consumerName = name;
@@ -27,4 +26,10 @@ public class MailDto {
         this.bookQuantity = quantity;
         this.totalPrice = totalPrice;
     }
+
+    public MailDto(String name, String email) {
+        this.consumerName = name;
+        this.consumerEmail = email;
+    }
+
 }

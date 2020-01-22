@@ -1,5 +1,7 @@
 package com.thoughtworks.onlinebookstore.dto;
+
 import org.hibernate.validator.constraints.NotBlank;
+
 import javax.validation.constraints.Pattern;
 
 public class ConsumerDto {
@@ -21,7 +23,8 @@ public class ConsumerDto {
     @Pattern(regexp = ("^[1-9][0-9]{5}$"))
     private String pinCode;
 
-    public ConsumerDto() { }
+    public ConsumerDto() {
+    }
 
     public ConsumerDto(String name, String email, String address, String pinCode, String country) {
 

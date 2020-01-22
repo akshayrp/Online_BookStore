@@ -1,7 +1,9 @@
 package com.thoughtworks.onlinebookstore.controller;
+
 import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
 import com.thoughtworks.onlinebookstore.dto.BookDto;
 import com.thoughtworks.onlinebookstore.dto.ConsumerDto;
+import com.thoughtworks.onlinebookstore.dto.MailDto;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
 import com.thoughtworks.onlinebookstore.model.Consumer;
@@ -12,10 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin(origins = "*",allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/TallTalesBooks")
 @RestController
 public class OnlineBookShopController {
@@ -39,7 +42,6 @@ public class OnlineBookShopController {
 
     @GetMapping("/list")
     public List<Book> getList() throws BookStoreException {
-
         try {
             return bookStoreServices.getAllBooks();
         } catch (BookStoreException e) {
@@ -55,16 +57,13 @@ public class OnlineBookShopController {
     @PostMapping(value = "/AddUserDetails")
     public Consumer addUserDetails(@Valid @RequestBody ConsumerDto consumer) {
         return orderConfirmationService.setDetails(consumer);
-
     }
 
-    @PostMapping("/confirmOrder/{consumerId}")
-    public String confirmOrder(@Valid @PathVariable Long consumerId) {
-        ResponseHelper responseHelper = orderConfirmationService.confirmOrderAndSendMail(consumerId);
+    @PostMapping("/addToCart/")
+    public String getCart(@RequestBody CofirmOrderData orderData) {
+        List<Book> bookList = orderData.getBookList();
+        ConsumerDto consumerDto = orderData.getConsumerDto();
+        ResponseHelper responseHelper = orderConfirmationService.confirmOrderAndSendMail(consumerDto, bookList);
         return responseHelper.toString();
     }
-//
-//    @PostMapping("AddToCart/")
-//    public
-
 }

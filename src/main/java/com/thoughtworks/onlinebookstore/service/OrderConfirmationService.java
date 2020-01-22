@@ -49,7 +49,6 @@ public class OrderConfirmationService {
     @Autowired
     private ModelMapper mapper;
 
-    private OrderDetails orderDetails;
     private Book book;
     private Optional<Consumer> consumer;
 
@@ -64,33 +63,15 @@ public class OrderConfirmationService {
         return consumerRepository.findConsumerByName(name);
     }
 
-    public ResponseHelper confirmOrderAndSendMail(Long consumerId)  {
-        consumer = consumerRepository.findById(consumerId);
-        MailDto mailDto = new MailDto(consumer.get().getName(), consumer.get().getEmail(), book.getBookId(),
-                book.getBookName(), book.getQuantity(), this.getTotalPrice(),consumer.get().getConsumerId());
-        mailData.setMailData(mailDto);
-        try {
-            bookStoreServices.updateQuantity(this.book.getBookId(), this.book.getQuantity(),book);
-        } catch (BookStoreException e) {
-            e.getMessage();
+    private void saveOrderDetails(List<Book> bookList, ConsumerDto consumer) {
+        OrderDetails orderDetails = new OrderDetails();
+        int orderNumber = orderDetailsRepository.findTopByOrderByOrderIdDesc().getOrderNumber();
+        orderNumber = orderNumber + 1;
+        for (Book book : bookList) {
+            orderDetails = new OrderDetails(orderNumber, book.getBookId(), book.getBookName(), consumer.getName(),
+                    consumer.getEmail(), book.getPrice() * book.getQuantity());
+            orderDetailsRepository.save(orderDetails);
         }
-        emailSender.send(setDataForBackOffice(companyEmail));
-        emailSender.send(setDataForCustomer(companyEmail, mailDto.getConsumerEmail(),
-                "TallTalesBooks Order Confirmation", mailData.getMailDataForCustomer()));
-        saveOrderDetails();
-        return new ResponseHelper(200, environment.getProperty("status.mail.MailSentSuccessFully"));
-    }
-
-    private void saveOrderDetails() {
-        orderDetails = new OrderDetails(book.getBookId(), book.getBookName(), consumer.get().getName(),
-                consumer.get().getEmail(), this.getTotalPrice());
-        orderDetailsRepository.save(orderDetails);
-    }
-
-    public double getTotalPrice() {
-        if (consumer.get().getCountry().equalsIgnoreCase("India"))
-            return ((this.book.getPrice() * this.book.getQuantity()) + countryType.INDIA.shippingCharges);
-        return ((this.book.getPrice() * this.book.getQuantity()) + countryType.OTHER_COUNTRY.shippingCharges);
     }
 
     public Book getPurchasingBook(int id, int quantity) {
@@ -115,6 +96,21 @@ public class OrderConfirmationService {
         backOfficeMessage.setSubject("Order Received");
         backOfficeMessage.setText(mailData.getMailDataForBackOffice());
         return backOfficeMessage;
+    }
+
+    public ResponseHelper confirmOrderAndSendMail(ConsumerDto consumer, List<Book> bookList) {
+        MailDto mailDto = new MailDto(consumer.getName(), consumer.getEmail());
+        mailData.setMailData(mailDto, bookList);
+        try {
+            bookStoreServices.updateQuantity(bookList);
+        } catch (BookStoreException e) {
+            e.getMessage();
+        }
+        emailSender.send(setDataForBackOffice(companyEmail));
+        emailSender.send(setDataForCustomer(companyEmail, mailDto.getConsumerEmail(),
+                "TallTalesBooks Order Confirmation", mailData.getMailDataForCustomer()));
+        saveOrderDetails(bookList, consumer);
+        return new ResponseHelper(200, environment.getProperty("status.mail.MailSentSuccessFully"));
     }
 }
 
