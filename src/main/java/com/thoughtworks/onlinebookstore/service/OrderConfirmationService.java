@@ -116,11 +116,6 @@ public class OrderConfirmationService {
         backOfficeMessage.setText(mailData.getMailDataForBackOffice());
         return backOfficeMessage;
     }
-
-    public List<Book> getAllBooks() throws BookStoreException {
-    return bookStoreServices.getAllBooks();
-    }
-
 }
 
 

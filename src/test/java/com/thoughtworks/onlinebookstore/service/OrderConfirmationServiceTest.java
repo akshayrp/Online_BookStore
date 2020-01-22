@@ -58,5 +58,4 @@ public class OrderConfirmationServiceTest {
         Assert.assertEquals(2, size);
     }
 
-
 }
