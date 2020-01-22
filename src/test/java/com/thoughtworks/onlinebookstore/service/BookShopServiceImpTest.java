@@ -1,4 +1,4 @@
-package com.thoughtworks.onlinebookstore.serviceBasedTests;
+package com.thoughtworks.onlinebookstore.service;
 
 import com.thoughtworks.onlinebookstore.dto.BookDto;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
