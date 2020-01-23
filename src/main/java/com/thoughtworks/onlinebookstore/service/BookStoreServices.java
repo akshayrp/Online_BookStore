@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookStoreServices implements IBookStoreServices {
@@ -44,6 +45,7 @@ public class BookStoreServices implements IBookStoreServices {
         return book;
     }
 
+/*
     @Override
     public void updateQuantity(int id, int purchasedQuantity, Book book) throws BookStoreException {
         int dbQuantity = bookShopRepository.findById(book.getBookId()).get().getQuantity();
@@ -55,13 +57,16 @@ public class BookStoreServices implements IBookStoreServices {
         getBookById.setQuantity(remainingQuantity);
         bookShopRepository.save(getBookById);
     }
+*/
 
     @Override
-    public List<Book> getBookFromCart(List<Book> bookList) {
-        for (Book b : bookList) {
-            System.out.println(b);
+    public List<Book> getAllSearchedBooks(String bookName) throws BookStoreException {
+        try {
+            List<Book> allBooks = getAllBooks();
+            return allBooks.stream().filter(book -> book.getBookName().contains(bookName)).collect(Collectors.toList());
+        } catch (BookStoreException e) {
+            throw new BookStoreException("data not available", BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
         }
-        return (bookList);
     }
 
     @Override

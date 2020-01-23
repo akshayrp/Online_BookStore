@@ -97,4 +97,17 @@ public class OnlineBookShopControllerTest {
         Assert.assertEquals(consumer1.toString(), consumer2.toString());
     }
 
+    @Test
+    public void givenBookStore_WhenSearchedByName_ShouldReturnTheBook() {
+        mockBookList = new ArrayList<>();
+        Book books1 = new Book("angel", 100, 10, "Chetan Bhagat", "abcd", "pooja");
+        mockBookList.add(books1);
+        try {
+            when(storeServices.getAllSearchedBooks("angel")).thenReturn(mockBookList);
+            List<Book> searchedList = controller.getbookByName("angel");
+            boolean isAvailable = searchedList.get(0).getBookName().contains("angel");
+            Assert.assertTrue(isAvailable);
+        } catch (BookStoreException e) { }
+    }
+
 }

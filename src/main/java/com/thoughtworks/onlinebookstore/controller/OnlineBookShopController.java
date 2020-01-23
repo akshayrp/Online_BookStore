@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/TallTalesBooks")
@@ -65,5 +66,14 @@ public class OnlineBookShopController {
         ConsumerDto consumerDto = orderData.getConsumerDto();
         ResponseHelper responseHelper = orderConfirmationService.confirmOrderAndSendMail(consumerDto, bookList);
         return responseHelper.toString();
+    }
+
+    @GetMapping("bookByName/{bookName}")
+    public List<Book> getbookByName(@PathVariable String bookName) throws BookStoreException {
+        try {
+            return bookStoreServices.getAllSearchedBooks(bookName);
+        } catch (BookStoreException e) {
+            throw  new BookStoreException("No Data Available", BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
+        }
     }
 }
