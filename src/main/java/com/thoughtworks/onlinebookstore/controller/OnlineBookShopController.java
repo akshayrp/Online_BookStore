@@ -3,10 +3,8 @@ package com.thoughtworks.onlinebookstore.controller;
 import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
 import com.thoughtworks.onlinebookstore.dto.BookDto;
 import com.thoughtworks.onlinebookstore.dto.ConsumerDto;
-import com.thoughtworks.onlinebookstore.dto.MailDto;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
-import com.thoughtworks.onlinebookstore.model.Consumer;
 import com.thoughtworks.onlinebookstore.service.IBookStoreServices;
 import com.thoughtworks.onlinebookstore.service.OrderConfirmationService;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/TallTalesBooks")
@@ -50,19 +47,10 @@ public class OnlineBookShopController {
         }
     }
 
-    @GetMapping("/get/{id}/{quantity}")
-    public Book getById(@PathVariable int id, @PathVariable int quantity) {
-        return orderConfirmationService.getPurchasingBook(id, quantity);
-    }
 
-    @PostMapping(value = "/AddUserDetails")
-    public Consumer addUserDetails(@Valid @RequestBody ConsumerDto consumer) {
-        return orderConfirmationService.setDetails(consumer);
-    }
-
-    @PostMapping("/addToCart/")
+    @PostMapping("/confirmOrder/")
     public String getCart(@RequestBody CofirmOrderData orderData) {
-        List<Book> bookList = orderData.getBookList();
+        List<BookDto> bookList = orderData.getBookList();
         ConsumerDto consumerDto = orderData.getConsumerDto();
         ResponseHelper responseHelper = orderConfirmationService.confirmOrderAndSendMail(consumerDto, bookList);
         return responseHelper.toString();

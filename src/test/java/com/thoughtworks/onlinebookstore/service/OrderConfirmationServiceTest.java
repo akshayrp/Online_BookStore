@@ -47,6 +47,7 @@ public class OrderConfirmationServiceTest {
         Assert.assertEquals("author", booksList1.get(0).getAuthorName());
     }
 
+
     @Test
     public void givenBookStore_WhenClickOnHomePage_ShouldReturnTotalSizeOfRecord() throws BookStoreException {
         booksList = new ArrayList<>();
@@ -61,11 +62,16 @@ public class OrderConfirmationServiceTest {
     }
 
     @Test
+    public void BookDetailVarification() {
+
+    }
+
+    @Test
     public void givenBookStore_WhenPurchasedMultipleBooks_ShouldReturnString() {
         booksList = new ArrayList<>();
-        Book books1 = new Book("The Girl in 105",200,10,"author","abcd","hello");
+        Book books1 = new Book("The Girl in 105",200,10,"author","abcd.jpg","hello");
         Book books2 = new Book("Da Vinci Code" +
-                "",100,10,"author1","abcd1","hello1");
+                "",100,10,"author1","abcd1.png","hello1");
         booksList.add(books1);
         booksList.add(books2);
         MailDto mailDto = new MailDto("AAAAAAAAAAAAAA", "AAAAASSSSS", 1, "SSSSSSSSSSSSSSSSSs", 5, 100.0, 2);

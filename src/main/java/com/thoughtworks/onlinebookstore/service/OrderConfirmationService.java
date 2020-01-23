@@ -1,6 +1,7 @@
 package com.thoughtworks.onlinebookstore.service;
 
 import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
+import com.thoughtworks.onlinebookstore.dto.BookDto;
 import com.thoughtworks.onlinebookstore.dto.ConsumerDto;
 import com.thoughtworks.onlinebookstore.dto.MailDto;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
@@ -18,6 +19,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,8 +27,6 @@ import java.util.Optional;
 
 @Service
 public class OrderConfirmationService {
-
-    private CountryType countryType;
 
     @Autowired
     private BookStoreServices bookStoreServices;
@@ -98,8 +98,10 @@ public class OrderConfirmationService {
         return backOfficeMessage;
     }
 
-    public ResponseHelper confirmOrderAndSendMail(ConsumerDto consumer, List<Book> bookList) {
+    public ResponseHelper confirmOrderAndSendMail(ConsumerDto consumer, List<BookDto> bookDtoList) {
         MailDto mailDto = new MailDto(consumer.getName(), consumer.getEmail());
+        List<Book> bookList = new ArrayList<>();
+        bookDtoList.stream().forEach(bookDto -> bookList.add(mapper.map(bookDto,Book.class)));
         mailData.setMailData(mailDto, bookList);
         try {
             bookStoreServices.updateQuantity(bookList);
