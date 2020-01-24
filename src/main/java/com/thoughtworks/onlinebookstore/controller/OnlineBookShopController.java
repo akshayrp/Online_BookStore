@@ -47,7 +47,6 @@ public class OnlineBookShopController {
         }
     }
 
-
     @PostMapping("/confirmOrder/")
     public String getCart(@RequestBody CofirmOrderData orderData) {
         List<BookDto> bookList = orderData.getBookList();
