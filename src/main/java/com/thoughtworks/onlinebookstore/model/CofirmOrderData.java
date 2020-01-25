@@ -1,17 +1,14 @@
-package com.thoughtworks.onlinebookstore.controller;
+package com.thoughtworks.onlinebookstore.model;
 
 import com.thoughtworks.onlinebookstore.dto.BookDto;
 import com.thoughtworks.onlinebookstore.dto.ConsumerDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 @Data
+@AllArgsConstructor
 public class CofirmOrderData {
     private List<BookDto> bookList;
     private ConsumerDto consumerDto;
-
-    public CofirmOrderData(List<BookDto> bookList, ConsumerDto consumerDto) {
-        this.bookList = bookList;
-        this.consumerDto = consumerDto;
-    }
 }

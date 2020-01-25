@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
-public class BookShopServiceImpTest {
+public class BookStoreServicesTest {
 
     @InjectMocks
     private BookStoreServices bookShopServicesImp = new BookStoreServices();

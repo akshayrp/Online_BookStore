@@ -5,10 +5,9 @@ import javax.persistence.*;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book {
-
-    public Book() {
-    }
 
     @Id
     private int bookId;
@@ -18,22 +17,5 @@ public class Book {
     private String image;
     private String description;
     private int quantity;
-
-
-    public Book(String title, double price, int quantity, String authorName, String image, String description) {
-        this.authorName = authorName;
-        this.bookName = title;
-        this.price = price;
-        this.quantity = quantity;
-        this.image = image;
-        this.description = description;
-    }
-
-    public Book(int bookId, String title, double price, int quantity) {
-        this.bookId = bookId;
-        this.bookName = title;
-        this.price = price;
-        this.quantity = quantity;
-    }
 
 }

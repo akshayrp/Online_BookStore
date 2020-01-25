@@ -56,29 +56,34 @@ public class OrderConfirmationService {
     private String backOfficeEmail = "talltalesbookbackoffice@gmail.com";
 
 
+/*
     public Consumer setDetails(ConsumerDto consumerDto) {
         Consumer consumer = mapper.map(consumerDto, Consumer.class);
         consumerRepository.save(consumer);
         String name = consumer.getName();
         return consumerRepository.findConsumerByName(name);
     }
+*/
 
     private void saveOrderDetails(List<Book> bookList, ConsumerDto consumer) {
         OrderDetails orderDetails = new OrderDetails();
         int orderNumber = orderDetailsRepository.findTopByOrderByOrderIdDesc().getOrderNumber();
         orderNumber = orderNumber + 1;
         for (Book book : bookList) {
-            orderDetails = new OrderDetails(orderNumber, book.getBookId(), book.getBookName(), consumer.getName(),
+            orderDetails = new OrderDetails(orderNumber,orderDetails.getOrderNumber(), book.getBookId(), book.getBookName(), consumer.getName(),
                     consumer.getEmail(), book.getPrice() * book.getQuantity());
             orderDetailsRepository.save(orderDetails);
         }
     }
 
+/*
     public Book getPurchasingBook(int id, int quantity) {
         Book bookById = bookStoreServices.getBookById(id);
-        this.book = new Book(bookById.getBookId(), bookById.getBookName(), bookById.getPrice(), quantity);
+        this.book = new Book(bookById.getBookId(), bookById.getBookName(), bookById.getAuthorName(),
+                bookById.getPrice(), bookById.getImage(), bookById.getDescription(), quantity);
         return bookById;
     }
+*/
 
     private SimpleMailMessage setDataForCustomer(String from, String to, String subject, String text) {
         SimpleMailMessage userMessage = new SimpleMailMessage();
@@ -98,16 +103,12 @@ public class OrderConfirmationService {
         return backOfficeMessage;
     }
 
-    public ResponseHelper confirmOrderAndSendMail(ConsumerDto consumer, List<BookDto> bookDtoList) {
+    public ResponseHelper confirmOrderAndSendMail(ConsumerDto consumer, List<BookDto> bookDtoList) throws BookStoreException {
         MailDto mailDto = new MailDto(consumer.getName(), consumer.getEmail());
         List<Book> bookList = new ArrayList<>();
         bookDtoList.stream().forEach(bookDto -> bookList.add(mapper.map(bookDto,Book.class)));
         mailData.setMailData(mailDto, bookList);
-        try {
-            bookStoreServices.updateQuantity(bookList);
-        } catch (BookStoreException e) {
-            e.getMessage();
-        }
+        bookStoreServices.updateQuantity(bookList);
         emailSender.send(setDataForBackOffice(companyEmail));
         emailSender.send(setDataForCustomer(companyEmail, mailDto.getConsumerEmail(),
                 "TallTalesBooks Order Confirmation", mailData.getMailDataForCustomer()));

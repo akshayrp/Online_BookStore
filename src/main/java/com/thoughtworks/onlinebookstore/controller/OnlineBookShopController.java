@@ -2,11 +2,9 @@ package com.thoughtworks.onlinebookstore.controller;
 
 import com.thoughtworks.onlinebookstore.Response.ResponseHelper;
 import com.thoughtworks.onlinebookstore.dto.BookDto;
-import com.thoughtworks.onlinebookstore.dto.ConsumerDto;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
 import com.thoughtworks.onlinebookstore.service.IBookStoreServices;
-import com.thoughtworks.onlinebookstore.service.OrderConfirmationService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,16 +15,14 @@ import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/TallTalesBooks")
+@RequestMapping("/book")
 @RestController
 public class OnlineBookShopController {
 
     @Autowired
-    private OrderConfirmationService orderConfirmationService;
-    @Autowired
     private IBookStoreServices bookStoreServices;
 
-    @PostMapping("/addBook")
+    @PostMapping("/post")
     @ApiOperation("Api for Add Book")
     public ResponseEntity<ResponseHelper> addBook(@Valid @RequestBody BookDto book) {
         System.out.println("sout to add commit msg into github and run build on jenkins");
@@ -38,7 +34,7 @@ public class OnlineBookShopController {
         }
     }
 
-    @GetMapping("/list")
+    @GetMapping("/")
     public List<Book> getList() throws BookStoreException {
         try {
             return bookStoreServices.getAllBooks();
@@ -47,20 +43,12 @@ public class OnlineBookShopController {
         }
     }
 
-    @PostMapping("/confirmOrder/")
-    public String getCart(@RequestBody CofirmOrderData orderData) {
-        List<BookDto> bookList = orderData.getBookList();
-        ConsumerDto consumerDto = orderData.getConsumerDto();
-        ResponseHelper responseHelper = orderConfirmationService.confirmOrderAndSendMail(consumerDto, bookList);
-        return responseHelper.toString();
-    }
-
-    @GetMapping("bookByName/{bookName}")
+    @GetMapping("get/{bookName}")
     public List<Book> getbookByName(@PathVariable String bookName) throws BookStoreException {
         try {
             return bookStoreServices.getAllSearchedBooks(bookName);
         } catch (BookStoreException e) {
-            throw  new BookStoreException("No Data Available", BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
+            throw  new BookStoreException(e.getMessage(), BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
         }
     }
 }
