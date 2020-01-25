@@ -23,7 +23,7 @@ public class OnlineBookShopController {
     private IBookStoreServices bookStoreServices;
 
     @PostMapping("/post")
-    @ApiOperation("Api for Add Book")
+    @ApiOperation("Api to Add Book")
     public ResponseEntity<ResponseHelper> addBook(@Valid @RequestBody BookDto book) {
         System.out.println("sout to add commit msg into github and run build on jenkins");
         try {
@@ -35,6 +35,7 @@ public class OnlineBookShopController {
     }
 
     @GetMapping("/")
+    @ApiOperation("Api to get Booklist")
     public List<Book> getList() throws BookStoreException {
         try {
             return bookStoreServices.getAllBooks();
@@ -44,6 +45,7 @@ public class OnlineBookShopController {
     }
 
     @GetMapping("get/{bookName}")
+    @ApiOperation("Api to find book by name")
     public List<Book> getbookByName(@PathVariable String bookName) throws BookStoreException {
         try {
             return bookStoreServices.getAllSearchedBooks(bookName);
