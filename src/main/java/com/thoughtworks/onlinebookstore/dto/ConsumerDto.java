@@ -24,38 +24,7 @@ public class ConsumerDto {
     private String address;
 
     @NotBlank(message = "Please Enter Valid Pin")
-    @Pattern(regexp = ("^[1-9][0-9]{5}$"))
+    @Pattern(regexp = ("^[1-9][0-9]{6}$"))
     private String pinCode;
 
-//    public ConsumerDto() {
-//    }
-//
-//    public ConsumerDto(String name, String email, String address, String pinCode, String country) {
-//
-//        this.name = name;
-//        this.email = email;
-//        this.address = address;
-//        this.pinCode = pinCode;
-//        this.country = country;
-//    }
-//
-//    public String getCountry() {
-//        return country;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public String getAddress() {
-//        return address;
-//    }
-//
-//    public String getPinCode() {
-//        return pinCode;
-//    }
 }

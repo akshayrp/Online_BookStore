@@ -43,6 +43,13 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
+    compile 'com.google.code.gson:gson:2.8.2'
+
+
+    testImplementation 'io.rest-assured:rest-assured:4.1.2'
+    compile 'com.google.code.gson:gson:2.2.+'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+
 
 }
 

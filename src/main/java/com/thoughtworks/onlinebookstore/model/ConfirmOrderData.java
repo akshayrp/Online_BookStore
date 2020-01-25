@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 @Data
 @AllArgsConstructor
-public class CofirmOrderData {
+public class ConfirmOrderData {
     private List<BookDto> bookList;
     private ConsumerDto consumerDto;
 }

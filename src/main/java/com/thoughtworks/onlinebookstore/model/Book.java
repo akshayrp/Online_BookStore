@@ -1,6 +1,7 @@
 package com.thoughtworks.onlinebookstore.model;
 
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity

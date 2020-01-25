@@ -8,7 +8,6 @@ import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
 import com.thoughtworks.onlinebookstore.model.Consumer;
 import com.thoughtworks.onlinebookstore.model.OrderDetails;
-import com.thoughtworks.onlinebookstore.repository.IConsumerRepository;
 import com.thoughtworks.onlinebookstore.repository.IOrderDetailsRepository;
 import com.thoughtworks.onlinebookstore.utility.MailData;
 import org.modelmapper.ModelMapper;
@@ -35,9 +34,6 @@ public class OrderConfirmationService {
     private IOrderDetailsRepository orderDetailsRepository;
 
     @Autowired
-    private IConsumerRepository consumerRepository;
-
-    @Autowired
     private MailData mailData;
 
     @Autowired
@@ -55,16 +51,6 @@ public class OrderConfirmationService {
     private String companyEmail = "talltalesbookchembur@gmail.com";
     private String backOfficeEmail = "talltalesbookbackoffice@gmail.com";
 
-
-/*
-    public Consumer setDetails(ConsumerDto consumerDto) {
-        Consumer consumer = mapper.map(consumerDto, Consumer.class);
-        consumerRepository.save(consumer);
-        String name = consumer.getName();
-        return consumerRepository.findConsumerByName(name);
-    }
-*/
-
     private void saveOrderDetails(List<Book> bookList, ConsumerDto consumer) {
         OrderDetails orderDetails = new OrderDetails();
         int orderNumber = orderDetailsRepository.findTopByOrderByOrderIdDesc().getOrderNumber();
@@ -75,15 +61,6 @@ public class OrderConfirmationService {
             orderDetailsRepository.save(orderDetails);
         }
     }
-
-/*
-    public Book getPurchasingBook(int id, int quantity) {
-        Book bookById = bookStoreServices.getBookById(id);
-        this.book = new Book(bookById.getBookId(), bookById.getBookName(), bookById.getAuthorName(),
-                bookById.getPrice(), bookById.getImage(), bookById.getDescription(), quantity);
-        return bookById;
-    }
-*/
 
     private SimpleMailMessage setDataForCustomer(String from, String to, String subject, String text) {
         SimpleMailMessage userMessage = new SimpleMailMessage();
@@ -104,17 +81,22 @@ public class OrderConfirmationService {
     }
 
     public ResponseHelper confirmOrderAndSendMail(ConsumerDto consumer, List<BookDto> bookDtoList) throws BookStoreException {
-        MailDto mailDto = new MailDto(consumer.getName(), consumer.getEmail());
-        List<Book> bookList = new ArrayList<>();
-        bookDtoList.stream().forEach(bookDto -> bookList.add(mapper.map(bookDto,Book.class)));
-        mailData.setMailData(mailDto, bookList);
-        bookStoreServices.updateQuantity(bookList);
-        emailSender.send(setDataForBackOffice(companyEmail));
-        emailSender.send(setDataForCustomer(companyEmail, mailDto.getConsumerEmail(),
-                "TallTalesBooks Order Confirmation", mailData.getMailDataForCustomer()));
-        saveOrderDetails(bookList, consumer);
+        try {
+            MailDto mailDto = new MailDto(consumer.getName(), consumer.getEmail());
+            List<Book> bookList = new ArrayList<>();
+            bookDtoList.stream().forEach(bookDto -> bookList.add(mapper.map(bookDto,Book.class)));
+            mailData.setMailData(mailDto, bookList);
+            bookStoreServices.updateQuantity(bookList);
+            emailSender.send(setDataForBackOffice(companyEmail));
+            emailSender.send(setDataForCustomer(companyEmail, mailDto.getConsumerEmail(),
+                    "TallTalesBooks Order Confirmation", mailData.getMailDataForCustomer()));
+            saveOrderDetails(bookList, consumer);
+        } catch (BookStoreException e) {
+            throw new BookStoreException("cannot send mail..",BookStoreException.ExceptionType.MAIL_NOT_SENT);
+        }
         return new ResponseHelper(200, environment.getProperty("status.mail.MailSentSuccessFully"));
     }
+
 }
 
 
