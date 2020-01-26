@@ -87,8 +87,17 @@ public class OrderControllerTest {
             int orderId = orderController.getOrderId("abc1@gmail.com");
             Assert.assertEquals(3,orderId);
         } catch (BookStoreException e) {
-            e.printStackTrace();
         }
     }
 
+    @Test
+    public void givenNonExistCustomerEmail_WhenTryToGetOrderId_ShouldThrowException() {
+        try {
+            BookStoreException expectedException = new BookStoreException("NO SUCH MAIL", BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
+            Mockito.when(mockedOrderConfirmationService.getOrderId("abcew12@gmail.com")).thenThrow(expectedException);
+            orderController.getOrderId("abcew12@gmail.com");
+        } catch (BookStoreException e) {
+            Assert.assertEquals(BookStoreException.ExceptionType.DATA_NOT_AVAILABLE,e.getType());
+        }
+    }
 }

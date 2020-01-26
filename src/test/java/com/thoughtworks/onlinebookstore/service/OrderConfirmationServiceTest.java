@@ -97,28 +97,11 @@ private BookStoreServices bookStoreServices;
             detailsArrayList.add(orderDetails2);
             detailsArrayList.add(orderDetails3);
             BookStoreException expectedException = new BookStoreException("No such email", BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
-            Mockito.when(iOrderDetailsRepository.findTopByConsumerEmailOrderByOrderIdDesc("thisIsNotACustomerId1@gmail.com")).thenThrow(expectedException);
+            Mockito.when(iOrderDetailsRepository.findTopByConsumerEmailOrderByOrderIdDesc("thisIsNotACustomerId1@gmail.com")).thenReturn(null);
             orderConfirmationService.getOrderId("thisIsNotACustomerId1@gmail.com");
         } catch (BookStoreException e) {
             Assert.assertEquals(BookStoreException.ExceptionType.DATA_NOT_AVAILABLE,e.getType());
         }
     }
 
-//    @Test
-//    public void givenCustomerAndListOfBook_WhenConfirmed_ShouldSendMail() {
-//        ArrayList<Book> books = new ArrayList<>();
-//        Book book1 = new Book(1, "Tales", "Chetan", 100.0, "image", "xyz", 1);
-//        Book book2 = new Book(2, "Tall", "Chetan", 100.0, "image", "xyz", 1);
-//        books.add(book1);
-//        books.add(book2);
-//        MailDto mailDto = new MailDto("jan", "abc1@gmail.com");
-//        doNothing().when(mockedMailData).setMailData(mailDto,books);
-//        try {
-//            doNothing().when(bookStoreServices).updateQuantity(booksList);
-//            doNothing().when(mockedEmailSender).send(anyString());
-//        } catch (BookStoreException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
 }

@@ -7,6 +7,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -29,7 +32,7 @@ public class BookController {
 
     @GetMapping("get/{bookName}")
     @ApiOperation("Api to find book by name")
-    public List<Book> getbookByName(@PathVariable String bookName) throws BookStoreException {
+    public List<Book> getbookByName(@Valid @NotNull @Pattern(regexp = ("[a-zA-Z]{2,}")) @PathVariable String bookName) throws BookStoreException {
         try {
             return bookStoreServices.getAllSearchedBooks(bookName);
         } catch (BookStoreException e) {
