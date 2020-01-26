@@ -97,6 +97,9 @@ public class OrderConfirmationService {
         return new ResponseHelper(200, environment.getProperty("status.mail.MailSentSuccessFully"));
     }
 
+    public Integer getOrderId(String customerEmail) {
+       return orderDetailsRepository.findTopByConsumerEmailOrderByOrderIdDesc(customerEmail).getOrderId();
+    }
 }
 
 

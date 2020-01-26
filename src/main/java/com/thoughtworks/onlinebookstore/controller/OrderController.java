@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/book")
@@ -32,11 +35,13 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/id")
+    @GetMapping("/id/{email}")
     @ApiOperation("Api to get order ID")
-    private int getOrderId(){
+    public int getOrderId(@Valid @NotNull @Pattern(regexp =  ("^[a-zA-Z0-9]([-._+]{0,1}[a-zA-Z0-9])*[@]{1}[a-zA-Z0-9]{1,}[.]{1}[a-zA-Z]{2,3}([.]{1}[a-zA-Z]{2,3}){0,1}$"),
+            message ="INVALID EMAIL") @PathVariable String email){
+       return orderConfirmationService.getOrderId(email);
 
-        return 10;
+
     }
 
 }

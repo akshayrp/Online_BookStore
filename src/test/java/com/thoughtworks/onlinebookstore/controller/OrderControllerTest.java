@@ -5,6 +5,7 @@ import com.thoughtworks.onlinebookstore.dto.BookDto;
 import com.thoughtworks.onlinebookstore.dto.ConsumerDto;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.ConfirmOrderData;
+import com.thoughtworks.onlinebookstore.model.OrderDetails;
 import com.thoughtworks.onlinebookstore.service.OrderConfirmationService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -50,6 +51,8 @@ public class OrderControllerTest {
         }
     }
 
+
+
     @Test
     public void givenAConfirmOrderDetails_WhenWantToConfirm_ShouldConfirmTHeOrder() {
         try {
@@ -67,8 +70,21 @@ public class OrderControllerTest {
         } catch (BookStoreException e) {
             e.printStackTrace();
         }
-
-
-
     }
+
+
+    @Test
+    public void given_WhenCustomerConfirmsTheOrder_ThenITShouldReturnOrderID(){
+        ArrayList<OrderDetails> detailsArrayList = new ArrayList<>();
+        OrderDetails orderDetails = new OrderDetails(1, 1, 2, "The pilot", "Pan", "abc1@gmail.com", 10.0);
+        OrderDetails orderDetails2 = new OrderDetails(2, 5, 2, "The pilot", "Pan", "abc1@gmail.com", 10.0);
+        OrderDetails orderDetails3 = new OrderDetails(3, 9, 1, "The Prey", "Pan", "abc1@gmail.com", 10.0);
+        detailsArrayList.add(orderDetails);
+        detailsArrayList.add(orderDetails2);
+        detailsArrayList.add(orderDetails3);
+        Mockito.when(mockedOrderConfirmationService.getOrderId("abc1@gmail.com")).thenReturn(3);
+        int orderId = orderController.getOrderId("abc1@gmail.com");
+        Assert.assertEquals(3,orderId);
+    }
+
 }
