@@ -31,4 +31,12 @@ public class OrderController {
             return new ResponseEntity("something went wrong ->" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/id")
+    @ApiOperation("Api to get order ID")
+    private int getOrderId(){
+
+        return 10;
+    }
+
 }
