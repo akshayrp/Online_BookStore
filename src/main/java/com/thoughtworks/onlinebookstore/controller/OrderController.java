@@ -14,10 +14,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+
 @RequestMapping("/book")
 @RestController
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OrderController {
     @Autowired
     private OrderConfirmationService orderConfirmationService;
