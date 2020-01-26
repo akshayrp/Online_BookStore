@@ -2,6 +2,7 @@ package com.thoughtworks.onlinebookstore.controller;
 
 import com.thoughtworks.onlinebookstore.dto.BookDto;
 import com.thoughtworks.onlinebookstore.dto.ConsumerDto;
+import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.ConfirmOrderData;
 import com.thoughtworks.onlinebookstore.service.OrderConfirmationService;
 import io.swagger.annotations.ApiOperation;
@@ -38,8 +39,12 @@ public class OrderController {
     @GetMapping("/id/{email}")
     @ApiOperation("Api to get order ID")
     public int getOrderId(@Valid @NotNull @Pattern(regexp =  ("^[a-zA-Z0-9]([-._+]{0,1}[a-zA-Z0-9])*[@]{1}[a-zA-Z0-9]{1,}[.]{1}[a-zA-Z]{2,3}([.]{1}[a-zA-Z]{2,3}){0,1}$"),
-            message ="INVALID EMAIL") @PathVariable String email){
-       return orderConfirmationService.getOrderId(email);
+            message ="INVALID EMAIL") @PathVariable String email) throws BookStoreException {
+        try {
+            return orderConfirmationService.getOrderId(email);
+        } catch (BookStoreException e) {
+            throw  new BookStoreException("something went wrong ->" + e.getMessage(), BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
+        }
     }
 
 }

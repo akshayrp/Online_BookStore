@@ -18,16 +18,6 @@ public class MailDto {
     private double totalPrice;
     private long consumerId;
 
-//    public MailDto(String name, String email, int bookId, String bookName, int quantity, double totalPrice, long consumerId) {
-//        this.consumerId = consumerId;
-//        this.consumerName = name;
-//        this.bookId = bookId;
-//        this.consumerEmail = email;
-//        this.bookTitle = bookName;
-//        this.bookQuantity = quantity;
-//        this.totalPrice = totalPrice;
-//    }
-
     public MailDto(String name, String email) {
         this.consumerName = name;
         this.consumerEmail = email;

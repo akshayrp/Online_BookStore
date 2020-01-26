@@ -25,14 +25,15 @@ import org.springframework.mail.javamail.JavaMailSender;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderConfirmationServiceTest {
     List<Book> booksList;
     List<BookDto> bookDtoList;
-
+@Mock
+private BookStoreServices bookStoreServices;
     @Mock
     private MailData mockedMailData;
 
@@ -69,16 +70,55 @@ public class OrderConfirmationServiceTest {
 
     @Test
     public void givenCustomerEmail_WhenConfirmedTheOrder_ShouldReturnItsOrderId() {
-        ArrayList<OrderDetails> detailsArrayList = new ArrayList<>();
-        OrderDetails orderDetails = new OrderDetails(1, 1, 2, "The pilot", "Pan", "abc1@gmail.com", 10.0);
-        OrderDetails orderDetails2 = new OrderDetails(2, 5, 2, "The pilot", "Pan", "abc1@gmail.com", 10.0);
-        OrderDetails orderDetails3 = new OrderDetails(3, 9, 1, "The Prey", "Pan", "abc1@gmail.com", 10.0);
-        detailsArrayList.add(orderDetails);
-        detailsArrayList.add(orderDetails2);
-        detailsArrayList.add(orderDetails3);
-        Mockito.when(iOrderDetailsRepository.findTopByConsumerEmailOrderByOrderIdDesc("abc1@gmail.com")).thenReturn(orderDetails3);
-        int orderId = orderConfirmationService.getOrderId("abc1@gmail.com");
-        Assert.assertEquals(3,orderId);
-
+        try {
+            ArrayList<OrderDetails> detailsArrayList = new ArrayList<>();
+            OrderDetails orderDetails = new OrderDetails(1, 1, 2, "The pilot", "Pan", "abc1@gmail.com", 10.0);
+            OrderDetails orderDetails2 = new OrderDetails(2, 5, 2, "The pilot", "Pan", "abc1@gmail.com", 10.0);
+            OrderDetails orderDetails3 = new OrderDetails(3, 9, 1, "The Prey", "Pan", "abc1@gmail.com", 10.0);
+            detailsArrayList.add(orderDetails);
+            detailsArrayList.add(orderDetails2);
+            detailsArrayList.add(orderDetails3);
+            Mockito.when(iOrderDetailsRepository.findTopByConsumerEmailOrderByOrderIdDesc("abc1@gmail.com")).thenReturn(orderDetails3);
+            int orderId = 0;
+            orderId = orderConfirmationService.getOrderId("abc1@gmail.com");
+            Assert.assertEquals(3,orderId);
+        } catch (BookStoreException e) {
+        }
     }
+
+    @Test
+    public void givenNonExistCustomerEmail_WhenTryToGetOrderId_ShouldThrowException() {
+        try {
+            ArrayList<OrderDetails> detailsArrayList = new ArrayList<>();
+            OrderDetails orderDetails = new OrderDetails(1, 1, 2, "The pilot", "Pan", "abc1@gmail.com", 10.0);
+            OrderDetails orderDetails2 = new OrderDetails(2, 5, 2, "The pilot", "Pan", "abc1@gmail.com", 10.0);
+            OrderDetails orderDetails3 = new OrderDetails(3, 9, 1, "The Prey", "Pan", "abc1@gmail.com", 10.0);
+            detailsArrayList.add(orderDetails);
+            detailsArrayList.add(orderDetails2);
+            detailsArrayList.add(orderDetails3);
+            BookStoreException expectedException = new BookStoreException("No such email", BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
+            Mockito.when(iOrderDetailsRepository.findTopByConsumerEmailOrderByOrderIdDesc("thisIsNotACustomerId1@gmail.com")).thenThrow(expectedException);
+            orderConfirmationService.getOrderId("thisIsNotACustomerId1@gmail.com");
+        } catch (BookStoreException e) {
+            Assert.assertEquals(BookStoreException.ExceptionType.DATA_NOT_AVAILABLE,e.getType());
+        }
+    }
+
+//    @Test
+//    public void givenCustomerAndListOfBook_WhenConfirmed_ShouldSendMail() {
+//        ArrayList<Book> books = new ArrayList<>();
+//        Book book1 = new Book(1, "Tales", "Chetan", 100.0, "image", "xyz", 1);
+//        Book book2 = new Book(2, "Tall", "Chetan", 100.0, "image", "xyz", 1);
+//        books.add(book1);
+//        books.add(book2);
+//        MailDto mailDto = new MailDto("jan", "abc1@gmail.com");
+//        doNothing().when(mockedMailData).setMailData(mailDto,books);
+//        try {
+//            doNothing().when(bookStoreServices).updateQuantity(booksList);
+//            doNothing().when(mockedEmailSender).send(anyString());
+//        } catch (BookStoreException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 }

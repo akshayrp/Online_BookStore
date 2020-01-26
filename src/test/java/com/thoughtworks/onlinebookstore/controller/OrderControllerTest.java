@@ -82,9 +82,13 @@ public class OrderControllerTest {
         detailsArrayList.add(orderDetails);
         detailsArrayList.add(orderDetails2);
         detailsArrayList.add(orderDetails3);
-        Mockito.when(mockedOrderConfirmationService.getOrderId("abc1@gmail.com")).thenReturn(3);
-        int orderId = orderController.getOrderId("abc1@gmail.com");
-        Assert.assertEquals(3,orderId);
+        try {
+            Mockito.when(mockedOrderConfirmationService.getOrderId("abc1@gmail.com")).thenReturn(3);
+            int orderId = orderController.getOrderId("abc1@gmail.com");
+            Assert.assertEquals(3,orderId);
+        } catch (BookStoreException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package com.thoughtworks.onlinebookstore.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Id;
@@ -9,8 +10,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-@Data
-@AllArgsConstructor
+@Getter
 public class BookDto {
 
     @Id
@@ -25,7 +25,7 @@ public class BookDto {
     @DecimalMin("1")
     private Double price;
 
-    @Pattern(regexp = "(^?[A-Za-z0-9])+.(?:jpg|gif|png)$",message = "Invalid image type")
+    @NotBlank(message = "image path can't be null")
     private String image;
 
     @NotBlank(message = "Description can't be null")
@@ -34,4 +34,15 @@ public class BookDto {
     @NotNull(message = "Book price can't be null")
     @DecimalMin("1")
     private Integer quantity;
+
+    public BookDto(Integer bookId, String bookName, String authorName, Double price, String image, String description, Integer quantity){
+
+        this.bookId = bookId;
+        this.bookName = bookName;
+        this.authorName = authorName;
+        this.price = price;
+        this.image = image;
+        this.description = description;
+        this.quantity = quantity;
+    }
 }

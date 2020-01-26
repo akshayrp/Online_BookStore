@@ -97,11 +97,14 @@ public class OrderConfirmationService {
         return new ResponseHelper(200, environment.getProperty("status.mail.MailSentSuccessFully"));
     }
 
-    public Integer getOrderId(String customerEmail) {
-        OrderDetails orderDetails = orderDetailsRepository.findTopByConsumerEmailOrderByOrderIdDesc(customerEmail);
-        Integer orderId = orderDetails.getOrderId();
-        return orderId;
-    }
+    public Integer getOrderId(String customerEmail) throws BookStoreException {
+            OrderDetails orderDetails = orderDetailsRepository.findTopByConsumerEmailOrderByOrderIdDesc(customerEmail);
+            if(orderDetails==null){
+                throw new BookStoreException("No such Customer exits", BookStoreException.ExceptionType.DATA_NOT_AVAILABLE);
+            }
+            Integer orderId = orderDetails.getOrderId();
+            return orderId;
+        }
 }
 
 
