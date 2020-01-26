@@ -22,11 +22,17 @@ public class MailData {
     private String shopName = "\t\t\t\t\t\t\t\t\t\tTall Tales Book Shop Ltd.\n\n";
     private String shopAdd = "Tall Tales Book Shop,\nMalhotra Chambers,\nFirst floor, Govandi East,\nMumbai, Maharashtra 400088\n\n";
     private String sincere = "Sincerely,\nTall Tales Book Shop\ntall-tales-book@gmail.com\n";
+    private String content=". We are pleased to " +
+            "accept your order and look forward to doing business with you.\n\nAs per the terms outlined in our quote, delivery is from four to six weeks from the date of the order.\n" +
+            "Should you have any queries regarding your order, please call our customer support number or get in touch with us directly via email.\n\n"
+            + "Thank you again for your order and business.\n\n";
 
 
     private String companyEmail = "talltalesbookchembur@gmail.com";
     private String backOfficeEmail = "talltalesbookbackoffice@gmail.com";
     /////////////Customer Mail Details
+
+    private String acknowledge="We acknowledge the receipt of your purchase order ";
 
 
     /////////////BackOffice Mail Details
@@ -35,10 +41,7 @@ public class MailData {
             "Following is the order details to be completed.\n\n";
 
     public String getMailDataForCustomer() {
-        return Header + shopName + bookingTime + "\n\n" + shopAdd + "Dear  " + mailDto.getConsumerName() + ",\n\n" + "We acknowledge the receipt of your purchase order " + mailDto.getBookId() + ". We are pleased to " +
-                "accept your order and look forward to doing business with you.\n\nAs per the terms outlined in our quote, delivery is from four to six weeks from the date of the order.\n" +
-                "Should you have any queries regarding your order, please call our customer support number or get in touch with us directly via email.\n\n"
-                + "Thank you again for your order and business.\n\n" + sincere;
+        return Header + shopName + bookingTime + "\n\n" + shopAdd + "Dear  " + mailDto.getConsumerName() + ",\n\n" + acknowledge + mailDto.getBookId() + content + sincere;
     }
 
     public String getMailDataForBackOffice() {

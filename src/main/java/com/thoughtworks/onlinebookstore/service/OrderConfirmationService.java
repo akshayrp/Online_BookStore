@@ -98,7 +98,9 @@ public class OrderConfirmationService {
     }
 
     public Integer getOrderId(String customerEmail) {
-       return orderDetailsRepository.findTopByConsumerEmailOrderByOrderIdDesc(customerEmail).getOrderId();
+        OrderDetails orderDetails = orderDetailsRepository.findTopByConsumerEmailOrderByOrderIdDesc(customerEmail);
+        Integer orderId = orderDetails.getOrderId();
+        return orderId;
     }
 }
 

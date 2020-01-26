@@ -5,7 +5,9 @@ import com.thoughtworks.onlinebookstore.dto.ConsumerDto;
 import com.thoughtworks.onlinebookstore.dto.MailDto;
 import com.thoughtworks.onlinebookstore.exception.BookStoreException;
 import com.thoughtworks.onlinebookstore.model.Book;
+import com.thoughtworks.onlinebookstore.model.OrderDetails;
 import com.thoughtworks.onlinebookstore.repository.IBookStoreRepository;
+import com.thoughtworks.onlinebookstore.repository.IOrderDetailsRepository;
 import com.thoughtworks.onlinebookstore.utility.MailData;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +34,6 @@ public class OrderConfirmationServiceTest {
     List<BookDto> bookDtoList;
 
     @Mock
-    BookStoreServices mockedBookStoreServices;
-
-    @Mock
     private MailData mockedMailData;
 
     @Mock
@@ -41,6 +41,9 @@ public class OrderConfirmationServiceTest {
 
     @Mock
     private Environment mockedEnvironment;
+
+    @Mock
+    private IOrderDetailsRepository iOrderDetailsRepository;
 
     @InjectMocks
     OrderConfirmationService orderConfirmationService;
@@ -64,4 +67,18 @@ public class OrderConfirmationServiceTest {
         mailData.setMailData(mailDto, booksList);
     }
 
+    @Test
+    public void givenCustomerEmail_WhenConfirmedTheOrder_ShouldReturnItsOrderId() {
+        ArrayList<OrderDetails> detailsArrayList = new ArrayList<>();
+        OrderDetails orderDetails = new OrderDetails(1, 1, 2, "The pilot", "Pan", "abc1@gmail.com", 10.0);
+        OrderDetails orderDetails2 = new OrderDetails(2, 5, 2, "The pilot", "Pan", "abc1@gmail.com", 10.0);
+        OrderDetails orderDetails3 = new OrderDetails(3, 9, 1, "The Prey", "Pan", "abc1@gmail.com", 10.0);
+        detailsArrayList.add(orderDetails);
+        detailsArrayList.add(orderDetails2);
+        detailsArrayList.add(orderDetails3);
+        Mockito.when(iOrderDetailsRepository.findTopByConsumerEmailOrderByOrderIdDesc("abc1@gmail.com")).thenReturn(orderDetails3);
+        int orderId = orderConfirmationService.getOrderId("abc1@gmail.com");
+        Assert.assertEquals(3,orderId);
+
+    }
 }

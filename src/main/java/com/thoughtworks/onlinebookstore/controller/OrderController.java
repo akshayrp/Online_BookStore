@@ -24,7 +24,7 @@ public class OrderController {
 
     @PostMapping("/order")
     @ApiOperation("Api to confirm order")
-    public ResponseEntity confirmOrder(@RequestBody ConfirmOrderData orderData)  {
+    public ResponseEntity confirmOrder(@Valid @RequestBody ConfirmOrderData orderData)  {
         List<BookDto> bookList = orderData.getBookList();
         ConsumerDto consumerDto = orderData.getConsumerDto();
         try {
@@ -40,8 +40,6 @@ public class OrderController {
     public int getOrderId(@Valid @NotNull @Pattern(regexp =  ("^[a-zA-Z0-9]([-._+]{0,1}[a-zA-Z0-9])*[@]{1}[a-zA-Z0-9]{1,}[.]{1}[a-zA-Z]{2,3}([.]{1}[a-zA-Z]{2,3}){0,1}$"),
             message ="INVALID EMAIL") @PathVariable String email){
        return orderConfirmationService.getOrderId(email);
-
-
     }
 
 }
